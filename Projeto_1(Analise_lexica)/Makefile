@@ -6,7 +6,7 @@ compile: myscanner.l
 	gcc lex.yy.c myscanner.c -o scanner
 
 run:
-	./scanner < in.in
+	./scanner < tests/test1.in
 
 clean:
 	@rm -rf myscanner

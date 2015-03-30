@@ -1,15 +1,21 @@
-/***
- *      TODOs:
- *  - Tratamento de comentários;
- *
- */
+/***************************************************************************************************
+ *                                  Trabalho 1 - Analisador léxico
+ *                      SCC0217 Linguagens de programação e compiladores       
+ *                                 Prof. Dr. Diego Raphael Amancio
+ ***************************************************************************************************
+ *      Grupo:
+ *          Bruno Sanches                   7
+ *          Carlos Humberto S Baqueta       
+ *          Cláudio Domene                  
+ ***************************************************************************************************/
 
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include "myscanner.h"
 
-#define M 1337
+#define M 1021 // Primo < 2¹⁰
 
 extern int yylex(); 
 extern int yylineno;
@@ -17,91 +23,70 @@ extern char *yytext;
 
 int hashTable[M];
 /*
- HASHCODE DAS PALAVRAS RESERVADAS USANDO A FC HASH ABAIXO C/ M = 1337
- program            760
- begin              517
- end                311
- var                329
- real               420
- integer            750
- procedure          969
- if                 207
- else               425
- read               412
- write              555
- while              537
- do                 211
- then               431
-    OBS.: o token da palavra reservada é a propria palavra
+    OBS.: como o token da palavra reservada é a propria palavra, temos: 
+        - hashTable[hashCode] = 1, se for palavra reservada
+        - hashTable[hashCode] = 0, c.c.
 */
 
-/// Hash para as palavras reservadas.
-int hash (char *str){
-    int i=0, hashCode=0;
-    int size = strlen(str);
-    // printf("size : %d\n", size);
-    for (i = 0; i < size; i++) {
-        hashCode = (hashCode + str[i])%M;
-    }
-    return hashCode;
-}
+int hash (char *str);
 
-void initializeHashTable (){
-    int i=0;
-    for (i = 0; i < M; i++){
-        hashTable[i] = 0;
-    }
-    hashTable[760] = 1;
-    hashTable[517] = 1;
-    hashTable[311] = 1;
-    hashTable[329] = 1;
-    hashTable[420] = 1;
-    hashTable[750] = 1;
-    hashTable[969] = 1;
-    hashTable[207] = 1;
-    hashTable[425] = 1;
-    hashTable[412] = 1;
-    hashTable[555] = 1;
-    hashTable[537] = 1;
-    hashTable[211] = 1;
-    hashTable[431] = 1;
-}
+int initializeHashTable ();
 
-
-
-
-int main(void){
+int main(int argc, char const *argv[]){
     int ntoken, vtoken;
-    int hc;
+    int hashCode;
 
-    ///
-    initializeHashTable();
+    /// Inicializa hashTable apropriadamente
+    if ( initializeHashTable() ) { return 1; }
     ///
 
     ntoken = yylex();
-    printf("PALAVRA RESERVADA\tHASHCODE\n");
     while (ntoken){
-        // printf("token: %d linha:%d conteudo: %s\n",ntoken, yylineno, yytext);
-        hc = hash(yytext);
-        if ( hc < M ) {
-            if ( hashTable[hc] ){
-                printf("%s : %s\n", yytext, yytext);
+        hashCode = hash(yytext);
+
+        if ( hashCode > 0 && hashCode < M && hashTable [ hashCode ] ){ // Checa se é palavra reservada
+            switch(hashCode){ // Eu sei, essa parte é mais pro t2, me empolguei...
+                case PROGRAM:
+                break;
+
+                case BEGIN:
+                break;
+
+                case END:
+                break;
+            }
+
+            printf("%s - %s\n", yytext, yytext);
+        } else {
+            switch(ntoken){
+                // TODO: INSERIR A REGRA EM myscanner.l, retornando os valores definidos em myscanner.h
+                // e tratar a impressao dos tokens e msgs de erro aqui:
+                case IDENT:
+                    printf("ident - %s\n", yytext);
+                    break;
+                case INTEGER_NUMBER:
+                    printf("numero_int - %s\n", yytext);
+                    break;
+                case REAL_NUMBER:
+                    printf("numero_real - %s\n", yytext);
+                    break;
+                case SEMICOLON:
+                    printf("; - %s\n", yytext);
+                    break;  
+                case ENDPOINT:
+                    printf(". - %s\n", yytext);
+                    break;  
+                case ATTRIBUTION:
+                    printf(":= - %s\n", yytext);
+                    break;  
+                case COLON:
+                    printf(": - %s\n", yytext);
+                    break;  
+                case COMMA:
+                    printf(", - %s\n", yytext);
+                    break;  
             }
         }
-
-        // printf(" %s\t\t    \t%d\n", yytext, hash(yytext));
-
-        // if(ntoken == INTEGER_NUMBER){
-        // 	printf("Encontrou INTEGER_NUMBER na linha %d, conteudo: %s\n", yylineno, yytext);
-        //     // printf("Erro de sintaxe na linha %d, Se esperava um :, e encontrou-se %s", yylineno, yytext);
-        // }
-        
-        // if(ntoken == REAL_NUMBER){
-        //     printf("Encontrou REAL_NUMBER na linha %d, conteudo: %s\n", yylineno, yytext);
-        //     // printf("Erro de sintaxe na linha %d, Se esperava um :, e encontrou-se %s", yylineno, yytext);
-        // }
-  
-
 
         ntoken = yylex();
     }
@@ -109,3 +94,41 @@ int main(void){
     return 0;
 }
 
+
+/// Funcao hash:
+int hash (char *str){
+    char c;
+    long long hashCode=0;
+
+    while (c = *str++) {
+        hashCode = ( ((hashCode<<5) + hashCode) + c )%M; /// hashCode = hashCode * 33 + c
+    }
+
+    return (int)hashCode;
+}
+
+
+/// Esta função é responsável por carregar as palavras reservadas do arquivo palavras_reservadas.txt 
+/// e gerar a hashTable a partir delas.
+int initializeHashTable (){
+    FILE *fp;
+    int i=0;
+    char word[1000];
+
+    if ( (fp = fopen("palavras_reservadas.txt", "r")) == NULL ){
+        fprintf(stderr, "Nao foi possivel encontrar o arquivo de palavras reservadas. Verifique se o arquivo 'palavras_reservadas.txt' encontra-se no diretorio atual.\n");
+        return 1;
+    }
+
+    /// Insere 0s em toda a hashTable
+    for (i = 0; i < M; i++)
+        hashTable[i] = 0;
+
+    while ( fscanf (fp, "%s", word) != EOF ){
+        hashTable[ hash (word) ] = 1;   /// Marca 1 no hashCode da palavra reservada
+        printf("palavra reservada: %10s  |  hashCode: %d\n", word, hash(word) );
+    }
+
+    fclose(fp);
+    return 0;
+}
