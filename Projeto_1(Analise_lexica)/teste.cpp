@@ -2,13 +2,9 @@
 
 
 
-
 int main(int argc, char const *argv[])
-{	
-	for (int i = 0; i < 10; ++i)
-	{
-		/* code */
-		printf("%d\n", (3<<5));
-	}
+{
+	float x = 0000.00000;
+	printf("%f\n", x);
 	return 0;
 }

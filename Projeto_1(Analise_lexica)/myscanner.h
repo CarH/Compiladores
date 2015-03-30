@@ -30,7 +30,7 @@
 
 /// Palavras Reservadas: HashCode de acordo com a função hash em 'myscanner.c'
 #define PROGRAM 681
-#define BEGIN 179
+#define BEGIN_ 179
 #define END 388
 #define VAR 108
 #define REAL 533
@@ -43,6 +43,9 @@
 #define WHILE 99
 #define DO 348
 #define THEN 254
+#define FOR 188
+#define TO 3939
+
 
 
 #endif

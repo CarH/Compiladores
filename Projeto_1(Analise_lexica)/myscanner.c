@@ -15,7 +15,7 @@
 #include <string.h>
 #include "myscanner.h"
 
-#define M 1021 // Primo < 2¹⁰
+#define M 16381 
 
 extern int yylex(); 
 extern int yylineno;
@@ -49,42 +49,79 @@ int main(int argc, char const *argv[]){
                 case PROGRAM:
                 break;
 
-                case BEGIN:
+                case BEGIN_:
                 break;
 
                 case END:
                 break;
             }
-
+            printf("PALAVRA RESERVADA: ");
             printf("%s - %s\n", yytext, yytext);
         } else {
             switch(ntoken){
                 // TODO: INSERIR A REGRA EM myscanner.l, retornando os valores definidos em myscanner.h
                 // e tratar a impressao dos tokens e msgs de erro aqui:
                 case IDENT:
-                    printf("ident - %s\n", yytext);
+                    printf("%s - ident\n", yytext);
+                    break;
+                case ERRO:
+                    printf("%s - erro\n", yytext);
                     break;
                 case INTEGER_NUMBER:
-                    printf("numero_int - %s\n", yytext);
+                    printf("%s - numero_int\n", yytext);
                     break;
                 case REAL_NUMBER:
-                    printf("numero_real - %s\n", yytext);
+                    printf("%s - numero_real\n", yytext);
                     break;
                 case SEMICOLON:
-                    printf("; - %s\n", yytext);
+                    printf("%s - ;\n", yytext);
                     break;  
                 case ENDPOINT:
-                    printf(". - %s\n", yytext);
+                    printf("%s - .\n", yytext);
                     break;  
                 case ATTRIBUTION:
-                    printf(":= - %s\n", yytext);
+                    printf("%s - :=\n", yytext);
                     break;  
                 case COLON:
-                    printf(": - %s\n", yytext);
+                    printf("%s - :\n", yytext);
                     break;  
                 case COMMA:
-                    printf(", - %s\n", yytext);
-                    break;  
+                    printf("%s - ,\n", yytext);
+                    break; 
+                case OPEN_PAR:
+                    printf("%s - (\n", yytext);
+                    break; 
+                case CLOSE_PAR:
+                    printf("%s - )\n", yytext);
+                    break; 
+                case PLUS:
+                    printf("%s - +\n", yytext);
+                    break; 
+                case MINUS:
+                    printf("%s - -\n", yytext);
+                    break;
+                case MULT:
+                    printf("%s - *\n", yytext);
+                    break; 
+                case DIV:
+                    printf("%s - /\n", yytext);
+                    break; 
+                case DIF:
+                    printf("%s - <>\n", yytext);
+                    break; 
+                case GREATER_EQUAL:
+                    printf("%s - >=\n", yytext);
+                    break; 
+                case LESSER_EQUAL:
+                    printf("%s - <=\n", yytext);
+                    break; 
+                case GREATER:
+                    printf("%s - >\n", yytext);
+                    break; 
+                case LESSER:
+                    printf("%s - <\n", yytext);
+                    break; 
+
             }
         }
 
@@ -126,7 +163,7 @@ int initializeHashTable (){
 
     while ( fscanf (fp, "%s", word) != EOF ){
         hashTable[ hash (word) ] = 1;   /// Marca 1 no hashCode da palavra reservada
-        printf("palavra reservada: %10s  |  hashCode: %d\n", word, hash(word) );
+        // printf("palavra reservada: %10s  |  hashCode: %d\n", word, hash(word) );
     }
 
     fclose(fp);

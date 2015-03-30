@@ -12,3 +12,5 @@ write
 while
 do
 then
+for
+to
