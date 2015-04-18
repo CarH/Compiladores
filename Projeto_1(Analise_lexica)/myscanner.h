@@ -2,7 +2,7 @@
 #define SCANNER_H value
 // Defines :
 
-#define ERRO 1 					// Erro -> tá muito genérico, tem que ser mais claro.
+#define ERRODESC 1 				
 #define IDENT 2					// NOME DO PROGRAMA, POR EXEMPLO
 #define SEMICOLON 3				// ;
 #define ENDPOINT 4				// .
@@ -27,6 +27,9 @@
 #define INTEGER_NUMBER 25		// NUMERO INTEIRO
 #define REAL_NUMBER 26			// NUMERO REAL DIFERENTE DE INTEIRO
 #define UNEXPECTED_CHAR 27		// Unexpected character
+#define ERROINT 28
+#define ERROIDENT 29
+#define ERROFLOAT 30
 
 /// Palavras Reservadas: HashCode de acordo com a função hash em 'myscanner.c'
 #define PROGRAM 681
@@ -46,6 +49,5 @@
 #define FOR 188
 #define TO 3939
 
-
-
+#define MAIORTAMANHO 5
 #endif

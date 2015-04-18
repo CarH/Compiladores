@@ -1,6 +1,6 @@
 program lalg;
 {entrada}
-var a: integer;
+var a.a.1.a: integer;
 begin
 readd(a, @, 1);
 end.
