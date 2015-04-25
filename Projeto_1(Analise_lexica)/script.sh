@@ -1,21 +1,27 @@
-echo "Digite o nome do arquivo de entrada (Exemplo: bla.c)"
-read x;
-y=$(ls $x)
-if [ "$y" == "" ]; then
-	echo "FILE NOT FOUND"
-	exit 0;
-fi
+#!/bin/bash
 
-echo "Compilando o compiler..."
-lex myscanner.l
-gcc lex.yy.c myscanner.c -o scanner -g
+while true; do
 
-echo "Rodando analise..."
-./scanner < $x > result.out
+	echo "Digite o nome do arquivo de entrada (Exemplo: entrada.in) ou digite \"sair\" (aspas para clareza) para sair"
+	read x
+	
+	if [ $x == "sair" ]; then
+		exit 0;
+	fi
 
+	if [ ! -f $x ]; then
+		echo "File not found!"
+	fi
 
+	echo "Compilando o compiler..."
+	lex myscanner.l
+	gcc lex.yy.c myscanner.c -o scanner -g
 
-cat result.out
+	echo "Rodando analise..."
+	./scanner < $x > result.out
 
-rm -rf myscanner
-rm -rf result.out
+	cat result.out
+
+	rm -rf myscanner
+	rm -rf result.out
+done
