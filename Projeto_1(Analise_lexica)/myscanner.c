@@ -10,16 +10,14 @@
  ***************************************************************************************************/
 
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include "myscanner.h"
+#include <stdio.h>      // Entrada e saída
+#include <stdlib.h>     // Manipulação de memória dinâmica
+#include <string.h>     // Manipulação de strings
+#include "myscanner.h"  // Inclusão de constantes e dados
 
-#define M 16381 
-
-extern int yylex(); 
-extern int yylineno;
-extern char *yytext;
+extern int yylex();     // Função que retorna o id da cadeia lida, ver myscanner.h e myscanner.l
+extern int yylineno;    // Contagem de linhas (não utilizamos pois não se adequa ao formato de saída exigido)
+extern char *yytext;    // Ponteiro para o valor da cadeia de entrada lida
 
 typedef struct trie trie;
 struct trie
@@ -28,6 +26,11 @@ struct trie
     int hasWord;
 };
 
+/**
+ *  alloc
+ *  Alocação dinâmica de memória para os nós da TRIE
+ *  @param **node : endereço do ponteiro que receberá o endereço do nó alocado
+ */
 void alloc(trie ** node)
 {
     (*node) = (trie *)malloc(sizeof(trie));
@@ -38,6 +41,12 @@ void alloc(trie ** node)
     (*node)->hasWord = 0;
 }
 
+/**
+ *  insert
+ *  Insere uma palavra na TRIE
+ *  @param node : nó atual
+ *  @param word : palavra a ser inserida
+ */
 void insert(trie * node, char * word)
 {
     if (word[0] == '\0')
@@ -53,6 +62,13 @@ void insert(trie * node, char * word)
     insert(node->filhos[word[0]], word + 1);
 }
 
+/**
+ *  query
+ *  Pesquisa se uma palavra está contida na TRIE ou não
+ *  @param node : nó atual
+ *  @param word : palavra a ser pesquisada
+ *  @return : 1 caso esteja contida ou 0 caso contrário 
+ */
 int query(trie * node, char * word)
 {
     if (word[0] == '\0')
@@ -68,19 +84,14 @@ int query(trie * node, char * word)
     return query(node->filhos[word[0]], word + 1);
 }
 
-trie* root;
-/*
-    OBS.: como o token da palavra reservada é a propria palavra, temos: 
-        - hashTable[hashCode] = 1, se for palavra reservada
-        - hashTable[hashCode] = 0, c.c.
-*/
-
+trie* root; // Raiz da árvore TRIE
 
 
 int main(int argc, char const *argv[]){
-    int ntoken, vtoken;
+    int ntoken;
+    int tam;
 
-    /// Inicializa hashTable apropriadamente
+    /// Inicializa a TRIE apropriadamente
     if ( initializeTrie() ) { return 1; }
     ///
 
@@ -91,10 +102,8 @@ int main(int argc, char const *argv[]){
             printf("PALAVRA RESERVADA: ");
             printf("%s - %s\n", yytext, yytext);
         } else {
-            int tam;
+            
             switch(ntoken){
-                // TODO: INSERIR A REGRA EM myscanner.l, retornando os valores definidos em myscanner.h
-                // e tratar a impressao dos tokens e msgs de erro aqui:
                 case IDENT:
                     tam = strlen(yytext);
                     if (tam > MAIORTAMANHO)
@@ -107,7 +116,7 @@ int main(int argc, char const *argv[]){
                     }
                     break;
                 case ERRODESC:
-                    printf("%s - Indentificador Desconhecido\n", yytext);
+                    printf("%s - Caracter desconhecido\n", yytext);
                     break;
                 case ERROINT:
                     printf("%s - Inteiro mal formado\n", yytext);
@@ -172,10 +181,8 @@ int main(int argc, char const *argv[]){
                 case LESSER:
                     printf("%s - <\n", yytext);
                     break; 
-
             }
         }
-
         ntoken = yylex();
     }
 
@@ -184,8 +191,12 @@ int main(int argc, char const *argv[]){
 
 
 
-/// Esta função é responsável por carregar as palavras reservadas do arquivo palavras_reservadas.txt 
-/// e gerar a hashTable a partir delas.
+/**
+ *  initializeTrie
+ *  Esta função é responsável por carregar as palavras reservadas do arquivo 
+ *  palavras_reservadas.txt e popular a TRIE a partir delas.
+ *  @return : 0 para sucesso e 1 para fallha
+*/
 int initializeTrie (){
     FILE *fp;
     int i=0;
@@ -200,7 +211,6 @@ int initializeTrie (){
     alloc(&root);
     while ( fscanf (fp, "%s", word) != EOF ){
         insert(root, word);
-        // printf("palavra reservada: %10s  |  hashCode: %d\n", word, hash(word) );
     }
 
     fclose(fp);

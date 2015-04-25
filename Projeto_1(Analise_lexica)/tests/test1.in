@@ -1,6 +1,9 @@
 program lalg;
 {entrada}
-var a.a.1.a: integer;
+var 34.3@$%&*&34: integer;
 begin
 readd(a, @, 1);
+
+x:=y*(3*5+4*6-9.7);
+
 end.
