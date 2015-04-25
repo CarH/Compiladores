@@ -1,6 +1,6 @@
 program lalg;
 {entrada}
-var 34.3@$%&*&34: integer;
+var 34.3: integer;
 begin
 readd(a, @, 1);
 
