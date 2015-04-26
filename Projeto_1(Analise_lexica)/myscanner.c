@@ -4,7 +4,7 @@
  *                                 Prof. Dr. Diego Raphael Amancio
  ***************************************************************************************************
  *      Grupo:
- *          Bruno Sanches                   7
+ *          Bruno Daniel Sanches Silva              
  *          Carlos Humberto S Baqueta       
  *          Cláudio Domene                  
  ***************************************************************************************************/
@@ -19,11 +19,15 @@ extern int yylex();     // Função que retorna o id da cadeia lida, ver myscann
 extern int yylineno;    // Contagem de linhas (não utilizamos pois não se adequa ao formato de saída exigido)
 extern char *yytext;    // Ponteiro para o valor da cadeia de entrada lida
 
+
+/**
+ * Definição da estrutura que conterá as palavras reservadas
+ */
 typedef struct trie trie;
 struct trie
 {
-    trie * filhos[256];
-    int hasWord;
+    trie * filhos[256]; // 256: uma saída(aresta) para cada caracter
+    int hasWord;        // informa se é uma palavra reservada (1-sim, 0-não)
 };
 
 /**
@@ -99,7 +103,6 @@ int main(int argc, char const *argv[]){
     while (ntoken){
 
         if ( query(root, yytext) ){ // Checa se é palavra reservada
-            printf("PALAVRA RESERVADA: ");
             printf("%s - %s\n", yytext, yytext);
         } else {
             

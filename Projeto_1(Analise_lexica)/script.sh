@@ -2,7 +2,7 @@
 
 while true; do
 
-	echo "Digite o nome do arquivo de entrada (Exemplo: entrada.in) ou digite \"sair\" (aspas para clareza) para sair"
+	echo "Digite o nome do arquivo de entrada (Exemplo: entrada.in) ou digite \"sair\" para sair"
 	read x
 	
 	if [ $x == "sair" ]; then
@@ -13,11 +13,11 @@ while true; do
 		echo "File not found!"
 	fi
 
-	echo "Compilando o compiler..."
+	echo "Compilando o scanner..."
 	lex myscanner.l
 	gcc lex.yy.c myscanner.c -o scanner -g
 
-	echo "Rodando analise..."
+	echo "Executando analise..."
 	./scanner < $x > result.out
 
 	cat result.out

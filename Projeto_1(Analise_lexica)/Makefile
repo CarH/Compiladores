@@ -1,45 +1,25 @@
  # MAKEFILE 
-all: clean compile run
+all: clean compile
 
 compile: myscanner.l 
 	lex myscanner.l
 	gcc lex.yy.c myscanner.c -o scanner
-
+	
 run:
 	# TESTE 1 :
+	####
 	@./scanner < tests/test1.in
-	#
-	# ____________________________________________
+	##############################################
 	# TESTE 2 :
+	####
 	@./scanner < tests/test2.in
-	#
-	# ____________________________________________
+	##############################################
 	# TESTE 3 :
+	####
 	@./scanner < tests/test3.in
 
 clean:
 	@rm -rf myscanner
-	@rm -rf result.out
-
-showresults:
-	cat ./result.out
-
-clonegithub:
-	git clone https://github.com/
-
-gitupload: gitpull gitadd gitcommit gitpush
-
-gitpull:
-	git pull
-
-gitadd: 
-	git add myscanner.l
-
-gitcommit:
-	git commit
-
-gitpush:
-	git push
 
 backup:
 	mkdir -p backup

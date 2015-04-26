@@ -1,6 +1,6 @@
-program lalg;
+program lalg; {{{{{COMENTARIO}}}}}
 {entrada}
-var 34.3: integer;
+var 34.3@: integer;
 begin
 readd(a, @, 1);
 
