@@ -18,6 +18,7 @@
 extern int yylex();     // Função que retorna o id da cadeia lida, ver myscanner.h e myscanner.l
 extern int yylineno;    // Contagem de linhas (não utilizamos pois não se adequa ao formato de saída exigido)
 extern char *yytext;    // Ponteiro para o valor da cadeia de entrada lida
+extern int yyparse();
 
 
 /**
@@ -99,6 +100,7 @@ int main(int argc, char const *argv[]){
     if ( initializeTrie() ) { return 1; }
     ///
 
+    return yyparse ( );
     ntoken = yylex();
     while (ntoken){
 

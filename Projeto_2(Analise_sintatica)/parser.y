@@ -1,17 +1,23 @@
 %{
 #include <stdio.h>     
 #include <stdlib.h>
+#include <cstring>
+#include "myscanner.h"
+
+using namespace std;
 // stuff from flex that bison needs to know about:
 extern "C" int yylex();
 extern "C" int yyparse();
 extern "C" FILE *yyin;
-void yyerror (char *s);
+void yyerror (const char *s);
+void check(char* ident);
+extern int line_num;
 %}
 
 %locations
 %define parse.error verbose
-%union {int numi; string id; float numf}         /* definições do yacc */
-%start commands
+%union {int numi; char* id; float numf;}        /* definições do yacc */
+%start programa
 %token ERRODESC              
 %token <id> IDENT                 // NOME DO PROGRAMA, POR EXEMPLO
 %token SEMICOLON             // ;
@@ -47,24 +53,27 @@ void yyerror (char *s);
    Um ponto e vírgula significa não fazer nada. */
 
 
-programa : 'program' IDENT ';' corpo .                                       {;}
+programa : "program" IDENT ';' corpo '.'                                     {;}
         ;
-corpo : dc 'begin' comandos 'end'                                            {;}
+corpo : dc "begin" comandos "end"                                            {;}
         ;
 dc : dc_c dc_v dc_p                                                          {;}
         ;
-dc_c : 'const' IDENT = numero ';' dc_c                                       {;}
+dc_c : "const" IDENT '=' numero ';' dc_c                                       {;}
         | /*vazio*/                                                          {;}
         ;
-dc_v : 'var' variaveis ':' tipo_var ';' dc_v                                 {;}
+dc_v : "var" variaveis ':' tipo_var ';' dc_v                                 {;}
         | /*vazio*/                                                          {;}
         ;
-tipo_var : 'real'                                                            {;}
-        | 'integer'                                                          {;}
+tipo_var : "real"                                                            {;}
+        | "integer"                                                          {;}
         ;
 variaveis : IDENT mais_var                                                   {;}
         ;
-dc_p : 'procedure' IDENT parametros ';' corpo_p dc_p                         {;}
+mais_var : ',' variaveis                                                     {;}
+        | /*vazio*/                                                          {;}
+        ;
+dc_p : "procedure" IDENT parametros ';' corpo_p dc_p                         {;}
         | /*vazio*/                                                          {;}
         ;
 parametros : '(' lista_par ')'                                               {;}
@@ -72,10 +81,10 @@ parametros : '(' lista_par ')'                                               {;}
         ;
 lista_par : variaveis : tipo_var mais_par                                    {;}
         ;
-mais_par : ; lista_par                                                       {;}
+mais_par : ';' lista_par                                                     {;}
         | /*vazio*/                                                          {;}
         ;
-corpo_p : dc_loc 'begin' comandos 'end' ;                                    {;}
+corpo_p : dc_loc "begin" comandos "end" ';'                                    {;}
         ;
 dc_loc : dc_v                                                                {;}
         ;
@@ -86,32 +95,28 @@ argumentos : IDENT mais_ident                                                {;}
 mais_ident : ';' argumentos                                                  {;}
         | /*vazio*/                                                          {;}
         ;
-pfalsa : 'else' cmd                                                          {;}
+pfalsa : "else" cmd                                                          {;}
         | /*vazio*/                                                          {;}
         ;
 comandos : cmd ';' comandos                                                  {;}
         | /*vazio*/                                                          {;}
         ;
-cmd : 'read' '(' variaveis ')'                                               {;}
-        | 'write' '(' variaveis ')'                                          {;}
-        | 'while' '(' condicao ')' 'do' cmd                                  {;}
-        | 'if' condicao 'then' cmd pfalsa                                    {;}
-        | IDENT ':=' expressão                                               {;}
+cmd : "read" '(' variaveis ')'                                               {;}
+        | "write" '(' variaveis ')'                                          {;}
+        | "while" '(' condicao ')' "do" cmd                                  {;}
+        | "if" condicao "then" cmd pfalsa                                    {;}
+        | IDENT ":=" expressao                                               {;}
         | IDENT lista_arg                                                    {;}
-        | 'write' '(' variaveis ')'                                          {;}
-        | 'while' '(' condicao ')' 'do' cmd                                  {;}
-        | 'if' condicao 'then' cmd pfalsa                                    {;}
-        | IDENT ':=' expressão                                               {;}
-        | IDENT lista_arg                                                    {;}
-        | 'begin' comandos 'end'                                             {;}
+        | "begin" comandos "end"                                             {;}
         ;
 condicao : expressao relacao expressao                                       {;}
         ;
 relacao : '='                                                                {;}
-        | '<>'                                                               {;}
-        | '>='                                                               {;}
-        | '='                                                                {;}
+        | "<>"                                                               {;}
+        | ">="                                                               {;}
+        | "<="                                                                {;}
         | '>'                                                                {;}
+        | '<'                                                                {;}
         | /*vazio*/                                                          {;}
         ;
 expressao : termo outros_termos                                              {;}
@@ -134,7 +139,7 @@ mais_fatores : op_mul fator mais_fatores                                     {;}
 op_mul : '*'                                                                 {;}
         | '/'                                                                {;}
         ;
-fator : IDENT                                                                {check($1)}
+fator : IDENT                                                                {check($1);}
         | numero                                                             {;}
         | '(' expressao ')'                                                  {;}
         ;
@@ -149,12 +154,13 @@ numero : INTEGER_NUMBER                                                      {;}
 
 /* Código C inserido diretamente no arquivo gerado pelo yacc */
 
-void check(string ident)
+void check(char* ident)
 {  
     char *erro = (char*)malloc(256 * sizeof(char));
-    if (ident.size() > MAIORTAMANHO)
+    int tam = strlen(ident);
+    if (tam > MAIORTAMANHO)
     {
-        sprintf(erro, "%s excede tamanho maximo de %d caracteres (Possui %d caracteres)\n",yytext,MAIORTAMANHO,tam);
+        sprintf(erro, "%s excede tamanho maximo de %d caracteres (Possui %d caracteres)\n",ident,MAIORTAMANHO,tam);
         yyerror(erro);
     }
     free(erro);
@@ -165,7 +171,8 @@ int main (void) {
     return yyparse ( );
 }
 
-void yyerror(char *str)
+void yyerror(const char *str)
 {
-    fprintf(stderr,"Line %d: %s\n",yylineno,str);
+    fprintf(stderr,"Line %d: %s\n",line_num,str);
+    exit(-1);
 }
