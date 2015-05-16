@@ -72,7 +72,8 @@ extern int yydebug;
     UNEXPECTED_CHAR = 282,
     ERROINT = 283,
     ERROIDENT = 284,
-    ERROFLOAT = 285
+    ERROFLOAT = 285,
+    RESERVADA = 286
   };
 #endif
 
@@ -81,10 +82,13 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 19 "parser.y" /* yacc.c:1909  */
-int numi; char* id; float numf;
+#line 22 "parser.y" /* yacc.c:1909  */
 
-#line 88 "parser.tab.h" /* yacc.c:1909  */
+    int numi;
+    float numf;
+    char *str;
+
+#line 92 "parser.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

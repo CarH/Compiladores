@@ -484,11 +484,83 @@ char *yytext;
 #include "myscanner.h"
 #include "parser.tab.h"
 #define YY_DECL extern "C" int yylex()
-
 using namespace std;
+extern void yyerror (const char *s);
+trie * root;
+
 
 int line_num = 1;
-#line 492 "lex.yy.c"
+
+void alloc(trie ** node)
+{
+    (*node) = (trie *)malloc(sizeof(trie));
+
+    int i;
+    for (i = 0; i < 256; ++i)
+        (*node)->filhos[i] = NULL;
+    (*node)->hasWord = 0;
+}
+
+void insert(trie * node, char * word)
+{
+    if (word[0] == '\0')
+    {
+        node->hasWord = 1;
+        return;
+    }
+    if (node->filhos[word[0]] == NULL)
+    {
+        alloc(&(node->filhos[word[0]]));
+    }
+
+    insert(node->filhos[word[0]], word + 1);
+}
+
+int initializeTrie (){
+    FILE *fp;
+    int i=0;
+    char word[1000];
+
+    if ( (fp = fopen("palavras_reservadas.txt", "r")) == NULL ){
+        fprintf(stderr, "Nao foi possivel encontrar o arquivo de palavras reservadas. Verifique se o arquivo 'palavras_reservadas.txt' encontra-se no diretorio atual.\n");
+        return 1;
+    }
+
+
+    alloc(&root);
+    while ( fscanf (fp, "%s", word) != EOF ){
+        insert(root, word);
+    }
+
+    fclose(fp);
+    return 0;
+}
+
+int query(trie * node, char * word)
+{
+    if (word[0] == '\0')
+    {
+        return node->hasWord;
+    }
+
+    if (node->filhos[word[0]] == NULL)
+    {
+        return 0;
+    }
+
+    return query(node->filhos[word[0]], word + 1);
+}
+
+yytokentype test(char *s)
+{
+	yylval.str = strdup(s);
+	if (query(root, s))
+	{
+		return RESERVADA;
+	}
+	return IDENT;
+}
+#line 564 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -697,10 +769,10 @@ YY_DECL
 		}
 
 	{
-#line 11 "myscanner.l"
+#line 83 "myscanner.l"
 
 
-#line 704 "lex.yy.c"
+#line 776 "lex.yy.c"
 
 	while ( 1 )		/* loops until end-of-file is reached */
 		{
@@ -759,141 +831,161 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 13 "myscanner.l"
-return IDENT;
+#line 85 "myscanner.l"
+return {test(yytext)};
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 14 "myscanner.l"
+#line 86 "myscanner.l"
 return REAL_NUMBER;
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 15 "myscanner.l"
+#line 87 "myscanner.l"
 return INTEGER_NUMBER;
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 16 "myscanner.l"
+#line 88 "myscanner.l"
 return ATTRIBUTION;
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 17 "myscanner.l"
+#line 89 "myscanner.l"
 return DIF;
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 18 "myscanner.l"
+#line 90 "myscanner.l"
 return GREATER_EQUAL;
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 19 "myscanner.l"
+#line 91 "myscanner.l"
 return LESSER_EQUAL;
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 20 "myscanner.l"
+#line 92 "myscanner.l"
 return GREATER;
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 21 "myscanner.l"
+#line 93 "myscanner.l"
 return LESSER;
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 22 "myscanner.l"
+#line 94 "myscanner.l"
 return SEMICOLON;
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 23 "myscanner.l"
+#line 95 "myscanner.l"
 return ENDPOINT;
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 24 "myscanner.l"
+#line 96 "myscanner.l"
 return COLON;
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 25 "myscanner.l"
+#line 97 "myscanner.l"
 return COMMA;
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 26 "myscanner.l"
+#line 98 "myscanner.l"
 return OPEN_PAR;  
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 27 "myscanner.l"
+#line 99 "myscanner.l"
 return CLOSE_PAR;
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 28 "myscanner.l"
+#line 100 "myscanner.l"
 return PLUS;
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 29 "myscanner.l"
+#line 101 "myscanner.l"
 return MINUS;
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 30 "myscanner.l"
+#line 102 "myscanner.l"
 return MULT;
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 31 "myscanner.l"
+#line 103 "myscanner.l"
 return DIV;
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 32 "myscanner.l"
+#line 104 "myscanner.l"
 ;
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 33 "myscanner.l"
+#line 105 "myscanner.l"
 ;
 	YY_BREAK
 case 22:
 /* rule 22 can match eol */
 YY_RULE_SETUP
-#line 34 "myscanner.l"
+#line 106 "myscanner.l"
 {++line_num;}
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 35 "myscanner.l"
-return ERROINT;
+#line 107 "myscanner.l"
+{
+																								char str[256];
+																								sprintf(str, "Inteiro mal formado (%s)\n",yytext);
+																								yyerror(str); 
+																								return ERROINT;
+																							};
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 36 "myscanner.l"
-return ERROFLOAT;
+#line 113 "myscanner.l"
+{
+																								char str[256];
+																								sprintf(str, "Float mal formado (%s)\n",yytext);
+																								yyerror(str);
+																								return ERROFLOAT;
+																							};
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 37 "myscanner.l"
-return ERROIDENT;
+#line 119 "myscanner.l"
+{
+																								char str[256];
+																								sprintf(str, "Identificador mal formado (%s)\n",yytext);
+																								yyerror(str);
+																								return ERROIDENT;
+																							};
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 38 "myscanner.l"
-return ERRODESC;
+#line 125 "myscanner.l"
+{
+																								char str[256];
+																								sprintf(str, "Caracter desconhecido (%s)\n",yytext);
+																								yyerror(str);
+																								return UNEXPECTED_CHAR;
+																							};
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 40 "myscanner.l"
+#line 132 "myscanner.l"
 ECHO;
 	YY_BREAK
-#line 897 "lex.yy.c"
+#line 989 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1888,7 +1980,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 40 "myscanner.l"
+#line 132 "myscanner.l"
 
 
 
