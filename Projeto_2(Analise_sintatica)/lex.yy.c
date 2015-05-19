@@ -491,76 +491,80 @@ trie * root;
 
 int line_num = 1;
 
-void alloc(trie ** node)
-{
-    (*node) = (trie *)malloc(sizeof(trie));
-
-    int i;
-    for (i = 0; i < 256; ++i)
-        (*node)->filhos[i] = NULL;
-    (*node)->hasWord = 0;
-}
-
-void insert(trie * node, char * word)
-{
-    if (word[0] == '\0')
-    {
-        node->hasWord = 1;
-        return;
-    }
-    if (node->filhos[word[0]] == NULL)
-    {
-        alloc(&(node->filhos[word[0]]));
-    }
-
-    insert(node->filhos[word[0]], word + 1);
-}
-
-int initializeTrie (){
-    FILE *fp;
-    int i=0;
-    char word[1000];
-
-    if ( (fp = fopen("palavras_reservadas.txt", "r")) == NULL ){
-        fprintf(stderr, "Nao foi possivel encontrar o arquivo de palavras reservadas. Verifique se o arquivo 'palavras_reservadas.txt' encontra-se no diretorio atual.\n");
-        return 1;
-    }
-
-
-    alloc(&root);
-    while ( fscanf (fp, "%s", word) != EOF ){
-        insert(root, word);
-    }
-
-    fclose(fp);
-    return 0;
-}
-
-int query(trie * node, char * word)
-{
-    if (word[0] == '\0')
-    {
-        return node->hasWord;
-    }
-
-    if (node->filhos[word[0]] == NULL)
-    {
-        return 0;
-    }
-
-    return query(node->filhos[word[0]], word + 1);
-}
-
 yytokentype test(char *s)
 {
 	yylval.str = strdup(s);
-	if (query(root, s))
-	{
-		return RESERVADA;
-	}
-	return IDENT;
+	if(!strcmp(s, "program"))
+    {
+       return PROGRAM ;
+    }
+    if(!strcmp(s, "begin"))
+    {
+       return BEG;
+    }
+    if(!strcmp(s, "end"))
+    {
+       return END;
+    }
+    if(!strcmp(s, "if"))
+    {
+       return IF;
+    }
+    if(!strcmp(s, "else"))
+    {
+       return ELSE;
+    }
+    if(!strcmp(s, "const"))
+    {
+       return CONST;
+    }
+    if(!strcmp(s, "var"))
+    {
+       return VAR;
+    }
+    if(!strcmp(s, "procedure"))
+    {
+       return PROCEDURE;
+    }
+    if(!strcmp(s, "real"))
+    {
+       return REAL;
+    }
+    if(!strcmp(s, "integer"))
+    {
+       return INTEGER;
+    }
+    if(!strcmp(s, "read"))
+    {
+       return READ;
+    }
+    if(!strcmp(s, "write"))
+    {
+       return WRITE;
+    }
+    if(!strcmp(s, "while"))
+    {
+       return WHILE;
+    }
+    if(!strcmp(s, "do"))
+    {
+       return DO;
+    }
+    if(!strcmp(s, "then"))
+    {
+       return THEN;
+    }
+    if(!strcmp(s, "for"))
+    {
+       return FOR;
+    }
+    if(!strcmp(s, "to"))
+    {
+       return TO;
+    }
+    return IDENT;
 }
-#line 564 "lex.yy.c"
+#line 568 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -769,10 +773,10 @@ YY_DECL
 		}
 
 	{
-#line 83 "myscanner.l"
+#line 87 "myscanner.l"
 
 
-#line 776 "lex.yy.c"
+#line 780 "lex.yy.c"
 
 	while ( 1 )		/* loops until end-of-file is reached */
 		{
@@ -831,118 +835,118 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 85 "myscanner.l"
+#line 89 "myscanner.l"
 return {test(yytext)};
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 86 "myscanner.l"
+#line 90 "myscanner.l"
 return REAL_NUMBER;
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 87 "myscanner.l"
+#line 91 "myscanner.l"
 return INTEGER_NUMBER;
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 88 "myscanner.l"
+#line 92 "myscanner.l"
 return ATTRIBUTION;
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 89 "myscanner.l"
+#line 93 "myscanner.l"
 return DIF;
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 90 "myscanner.l"
+#line 94 "myscanner.l"
 return GREATER_EQUAL;
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 91 "myscanner.l"
+#line 95 "myscanner.l"
 return LESSER_EQUAL;
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 92 "myscanner.l"
+#line 96 "myscanner.l"
 return GREATER;
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 93 "myscanner.l"
+#line 97 "myscanner.l"
 return LESSER;
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 94 "myscanner.l"
+#line 98 "myscanner.l"
 return SEMICOLON;
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 95 "myscanner.l"
+#line 99 "myscanner.l"
 return ENDPOINT;
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 96 "myscanner.l"
+#line 100 "myscanner.l"
 return COLON;
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 97 "myscanner.l"
+#line 101 "myscanner.l"
 return COMMA;
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 98 "myscanner.l"
+#line 102 "myscanner.l"
 return OPEN_PAR;  
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 99 "myscanner.l"
+#line 103 "myscanner.l"
 return CLOSE_PAR;
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 100 "myscanner.l"
+#line 104 "myscanner.l"
 return PLUS;
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 101 "myscanner.l"
+#line 105 "myscanner.l"
 return MINUS;
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 102 "myscanner.l"
+#line 106 "myscanner.l"
 return MULT;
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 103 "myscanner.l"
+#line 107 "myscanner.l"
 return DIV;
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 104 "myscanner.l"
+#line 108 "myscanner.l"
 ;
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 105 "myscanner.l"
+#line 109 "myscanner.l"
 ;
 	YY_BREAK
 case 22:
 /* rule 22 can match eol */
 YY_RULE_SETUP
-#line 106 "myscanner.l"
+#line 110 "myscanner.l"
 {++line_num;}
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 107 "myscanner.l"
+#line 111 "myscanner.l"
 {
 																								char str[256];
 																								sprintf(str, "Inteiro mal formado (%s)\n",yytext);
@@ -952,7 +956,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 113 "myscanner.l"
+#line 117 "myscanner.l"
 {
 																								char str[256];
 																								sprintf(str, "Float mal formado (%s)\n",yytext);
@@ -962,7 +966,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 119 "myscanner.l"
+#line 123 "myscanner.l"
 {
 																								char str[256];
 																								sprintf(str, "Identificador mal formado (%s)\n",yytext);
@@ -972,7 +976,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 125 "myscanner.l"
+#line 129 "myscanner.l"
 {
 																								char str[256];
 																								sprintf(str, "Caracter desconhecido (%s)\n",yytext);
@@ -982,10 +986,10 @@ YY_RULE_SETUP
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 132 "myscanner.l"
+#line 136 "myscanner.l"
 ECHO;
 	YY_BREAK
-#line 989 "lex.yy.c"
+#line 993 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1980,7 +1984,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 132 "myscanner.l"
+#line 136 "myscanner.l"
 
 
 

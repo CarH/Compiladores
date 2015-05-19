@@ -9,74 +9,78 @@ trie * root;
 
 int line_num = 1;
 
-void alloc(trie ** node)
-{
-    (*node) = (trie *)malloc(sizeof(trie));
-
-    int i;
-    for (i = 0; i < 256; ++i)
-        (*node)->filhos[i] = NULL;
-    (*node)->hasWord = 0;
-}
-
-void insert(trie * node, char * word)
-{
-    if (word[0] == '\0')
-    {
-        node->hasWord = 1;
-        return;
-    }
-    if (node->filhos[word[0]] == NULL)
-    {
-        alloc(&(node->filhos[word[0]]));
-    }
-
-    insert(node->filhos[word[0]], word + 1);
-}
-
-int initializeTrie (){
-    FILE *fp;
-    int i=0;
-    char word[1000];
-
-    if ( (fp = fopen("palavras_reservadas.txt", "r")) == NULL ){
-        fprintf(stderr, "Nao foi possivel encontrar o arquivo de palavras reservadas. Verifique se o arquivo 'palavras_reservadas.txt' encontra-se no diretorio atual.\n");
-        return 1;
-    }
-
-
-    alloc(&root);
-    while ( fscanf (fp, "%s", word) != EOF ){
-        insert(root, word);
-    }
-
-    fclose(fp);
-    return 0;
-}
-
-int query(trie * node, char * word)
-{
-    if (word[0] == '\0')
-    {
-        return node->hasWord;
-    }
-
-    if (node->filhos[word[0]] == NULL)
-    {
-        return 0;
-    }
-
-    return query(node->filhos[word[0]], word + 1);
-}
-
 yytokentype test(char *s)
 {
 	yylval.str = strdup(s);
-	if (query(root, s))
-	{
-		return RESERVADA;
-	}
-	return IDENT;
+	if(!strcmp(s, "program"))
+    {
+       return PROGRAM ;
+    }
+    if(!strcmp(s, "begin"))
+    {
+       return BEG;
+    }
+    if(!strcmp(s, "end"))
+    {
+       return END;
+    }
+    if(!strcmp(s, "if"))
+    {
+       return IF;
+    }
+    if(!strcmp(s, "else"))
+    {
+       return ELSE;
+    }
+    if(!strcmp(s, "const"))
+    {
+       return CONST;
+    }
+    if(!strcmp(s, "var"))
+    {
+       return VAR;
+    }
+    if(!strcmp(s, "procedure"))
+    {
+       return PROCEDURE;
+    }
+    if(!strcmp(s, "real"))
+    {
+       return REAL;
+    }
+    if(!strcmp(s, "integer"))
+    {
+       return INTEGER;
+    }
+    if(!strcmp(s, "read"))
+    {
+       return READ;
+    }
+    if(!strcmp(s, "write"))
+    {
+       return WRITE;
+    }
+    if(!strcmp(s, "while"))
+    {
+       return WHILE;
+    }
+    if(!strcmp(s, "do"))
+    {
+       return DO;
+    }
+    if(!strcmp(s, "then"))
+    {
+       return THEN;
+    }
+    if(!strcmp(s, "for"))
+    {
+       return FOR;
+    }
+    if(!strcmp(s, "to"))
+    {
+       return TO;
+    }
+    return IDENT;
 }
 %}
 

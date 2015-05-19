@@ -73,7 +73,23 @@ extern int yydebug;
     ERROINT = 283,
     ERROIDENT = 284,
     ERROFLOAT = 285,
-    RESERVADA = 286
+    PROGRAM = 286,
+    BEG = 287,
+    END = 288,
+    IF = 289,
+    ELSE = 290,
+    CONST = 291,
+    VAR = 292,
+    PROCEDURE = 293,
+    REAL = 294,
+    INTEGER = 295,
+    READ = 296,
+    WRITE = 297,
+    WHILE = 298,
+    DO = 299,
+    THEN = 300,
+    FOR = 301,
+    TO = 302
   };
 #endif
 
@@ -88,7 +104,7 @@ union YYSTYPE
     float numf;
     char *str;
 
-#line 92 "parser.tab.h" /* yacc.c:1909  */
+#line 108 "parser.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

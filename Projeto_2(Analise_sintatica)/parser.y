@@ -27,7 +27,7 @@ extern int line_num;
 
 %start programa
 %token ERRODESC              
-%token <str> IDENT                 // NOME DO PROGRAMA, POR EXEMPLO
+%token <str>IDENT                 // NOME DO PROGRAMA, POR EXEMPLO
 %token SEMICOLON             // ;
 %token ENDPOINT              // .
 %token ATTRIBUTION           // :=
@@ -54,7 +54,23 @@ extern int line_num;
 %token ERROINT
 %token ERROIDENT
 %token ERROFLOAT
-%token <str> RESERVADA           //token de palavra reservada
+%token PROGRAM           
+%token BEG           
+%token END           
+%token IF           
+%token ELSE           
+%token CONST           
+%token VAR           
+%token PROCEDURE           
+%token REAL           
+%token INTEGER           
+%token READ
+%token WRITE
+%token WHILE
+%token DO
+%token THEN
+%token FOR
+%token TO
 %%
 
 /* Gramática da linguagem. 
@@ -62,55 +78,37 @@ extern int line_num;
    Um ponto e vírgula significa não fazer nada. */
 
 
-programa : RESERVADA IDENT SEMICOLON corpo ENDPOINT                         {
-                                                                                check($1, (char *)"program");
-                                                                            }
+programa : PROGRAM IDENT SEMICOLON corpo ENDPOINT                           {;}
         ;
-corpo : dc RESERVADA comandos RESERVADA                                     {
-                                                                                check($2, (char *)"begin"); 
-                                                                                check($4, (char *)"end");
-                                                                            }
+corpo : dc BEG comandos END                                                 {;}
         ;
 dc : dc_c dc_v dc_p                                                         {;}
         ;
-dc_c : RESERVADA IDENT EQUAL numero SEMICOLON dc_c                          {
-                                                                                check($1, (char *)"const");
-                                                                            }
+dc_c : CONST IDENT EQUAL numero SEMICOLON dc_c                              {;}
         | /*vazio*/                                                         {;}
         ;
-dc_v : RESERVADA variaveis COLON tipo_var SEMICOLON dc_v                    {
-                                                                                check($1, (char *)"var");
-                                                                            }
+dc_v : VAR variaveis COLON tipo_var SEMICOLON dc_v                          {;}
         | /*vazio*/                                                         {;}
         ;
-tipo_var : RESERVADA                                                        {
-                                                                                check($1, (char *)"real");
-                                                                            }
-        | RESERVADA                                                         {
-                                                                                check($1, (char *)"integer");
-                                                                            }
+tipo_var : REAL                                                             {;}
+        | INTEGER                                                           {;}
 variaveis : IDENT mais_var                                                  {;}
         ;
 mais_var : COMMA variaveis                                                  {;}
         | /*vazio*/                                                         {;}
         ;
-dc_p : RESERVADA IDENT parametros SEMICOLON corpo_p dc_p                    {
-                                                                                check($1, (char *)"procedure");
-                                                                            }
+dc_p : PROCEDURE IDENT parametros SEMICOLON corpo_p dc_p                    {;}
         | /*vazio*/                                                         {;}
         ;
 parametros : OPEN_PAR lista_par CLOSE_PAR                                   {;}
         | /*vazio*/                                                         {;}
         ;
-lista_par : variaveis : tipo_var mais_par                                   {;}
+lista_par : variaveis COLON tipo_var mais_par                                   {;}
         ;
 mais_par : SEMICOLON lista_par                                              {;}
         | /*vazio*/                                                         {;}
         ;
-corpo_p : dc_loc RESERVADA comandos RESERVADA SEMICOLON                     {
-                                                                                check($2, (char *)"begin"); 
-                                                                                check($4, (char *)"end");
-                                                                            }
+corpo_p : dc_loc BEG comandos END SEMICOLON                                 {;}
         ;
 dc_loc : dc_v                                                               {;}
         ;
@@ -121,34 +119,20 @@ argumentos : IDENT mais_ident                                               {;}
 mais_ident : SEMICOLON argumentos                                           {;}
         | /*vazio*/                                                         {;}
         ;
-pfalsa : RESERVADA cmd                                                      {
-                                                                                check($1, (char *)"else");
-                                                                            }
+pfalsa : ELSE cmd                                                           {;}
         | /*vazio*/                                                         {;}
         ;
 comandos : cmd SEMICOLON comandos                                           {;}
         | /*vazio*/                                                         {;}
         ;
-cmd : RESERVADA OPEN_PAR variaveis CLOSE_PAR                                {
-                                                                                check($1, (char *)"read");
-                                                                            }
-        | RESERVADA OPEN_PAR variaveis CLOSE_PAR                            {
-                                                                                check($1, (char *)"write");
-                                                                            }
-        | RESERVADA OPEN_PAR condicao CLOSE_PAR RESERVADA cmd               {
-                                                                                check($1, (char *)"while");
-                                                                                check($5, (char *)"do");
-                                                                            }
-        | RESERVADA condicao RESERVADA cmd pfalsa                           {
-                                                                                check($1, (char *)"if");
-                                                                                check($3, (char *)"then");
-                                                                            }
+cmd : READ OPEN_PAR variaveis CLOSE_PAR                                     {;}
+        | WRITE OPEN_PAR variaveis CLOSE_PAR                                {;}
+        | WHILE OPEN_PAR condicao CLOSE_PAR DO cmd                          {;}
+        | IF condicao THEN cmd pfalsa                                       {;}
         | IDENT ATTRIBUTION expressao                                       {;}
         | IDENT lista_arg                                                   {;}
-        | RESERVADA comandos RESERVADA                                      {
-                                                                                check($1, (char *)"begin"); 
-                                                                                check($3, (char *)"end");
-                                                                            }
+        | BEG comandos END                                                  {;}
+        | FOR IDENT ATTRIBUTION numero TO numero DO BEG comandos END        {;}
         ;
 condicao : expressao relacao expressao                                      {;}
         ;
@@ -222,7 +206,6 @@ int main(int argc, char const *argv[]){
     int tam;
 
     /// Inicializa a TRIE apropriadamente
-    if ( initializeTrie() ) { return 1; }
     ///
 
     return yyparse ( );
