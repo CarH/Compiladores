@@ -77,7 +77,7 @@ using namespace std;
 extern "C" int yylex();
 extern "C" int yyparse();
 extern "C" FILE *yyin;
-void check(char* ident, char *expected);
+void check(char* ident);
 extern int line_num;
 
 #line 84 "parser.tab.c" /* yacc.c:339  */
@@ -1469,7 +1469,7 @@ yyreduce:
     {
         case 2:
 #line 81 "parser.y" /* yacc.c:1646  */
-    {;}
+    {check((yyvsp[-3].str));}
 #line 1474 "parser.tab.c" /* yacc.c:1646  */
     break;
 
@@ -1487,7 +1487,7 @@ yyreduce:
 
   case 5:
 #line 87 "parser.y" /* yacc.c:1646  */
-    {;}
+    {check((yyvsp[-4].str));}
 #line 1492 "parser.tab.c" /* yacc.c:1646  */
     break;
 
@@ -1523,7 +1523,7 @@ yyreduce:
 
   case 11:
 #line 95 "parser.y" /* yacc.c:1646  */
-    {;}
+    {check((yyvsp[-1].str));}
 #line 1528 "parser.tab.c" /* yacc.c:1646  */
     break;
 
@@ -1607,7 +1607,7 @@ yyreduce:
 
   case 25:
 #line 118 "parser.y" /* yacc.c:1646  */
-    {;}
+    {check((yyvsp[-1].str));}
 #line 1612 "parser.tab.c" /* yacc.c:1646  */
     break;
 
@@ -1673,7 +1673,7 @@ yyreduce:
 
   case 36:
 #line 132 "parser.y" /* yacc.c:1646  */
-    {;}
+    {check((yyvsp[-2].str));}
 #line 1678 "parser.tab.c" /* yacc.c:1646  */
     break;
 
@@ -1691,7 +1691,7 @@ yyreduce:
 
   case 39:
 #line 135 "parser.y" /* yacc.c:1646  */
-    {;}
+    {check((yyvsp[-8].str));}
 #line 1696 "parser.tab.c" /* yacc.c:1646  */
     break;
 
@@ -1823,7 +1823,7 @@ yyreduce:
 
   case 61:
 #line 167 "parser.y" /* yacc.c:1646  */
-    {;}
+    {check((yyvsp[0].str));}
 #line 1828 "parser.tab.c" /* yacc.c:1646  */
     break;
 
@@ -2092,23 +2092,14 @@ yyreturn:
 
 /* Código C inserido diretamente no arquivo gerado pelo yacc */
 
-void check(char* ident, char *expected)
+void check(char* ident)
 {  
     char *erro = (char*)malloc(256 * sizeof(char));
-    
-    if (strcmp(ident, expected))
+    int tam = strlen(ident);
+    if (tam > MAIORTAMANHO)
     {
-        sprintf(erro, "Era esperada a palavra reservada %s, encontrou-se %s",expected, ident);
+        sprintf(erro, "A variavel %s excede tamanho maximo de %d caracteres (Possui %d caracteres)\n",ident,MAIORTAMANHO,tam);
         yyerror(erro);
-    }
-    else
-    {
-        int tam = strlen(ident);
-        if (tam > MAIORTAMANHO)
-        {
-            sprintf(erro, "%s excede tamanho maximo de %d caracteres (Possui %d caracteres)\n",ident,MAIORTAMANHO,tam);
-            yyerror(erro);
-        }
     }
     free(erro);
 }
@@ -2117,10 +2108,6 @@ void check(char* ident, char *expected)
 int main(int argc, char const *argv[]){
     int ntoken;
     int tam;
-
-    /// Inicializa a TRIE apropriadamente
-    ///
-
     return yyparse ( );
 }
 void yyerror(const char *str)

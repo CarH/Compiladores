@@ -12,7 +12,7 @@ using namespace std;
 extern "C" int yylex();
 extern "C" int yyparse();
 extern "C" FILE *yyin;
-void check(char* ident, char *expected);
+void check(char* ident);
 extern int line_num;
 %}
 
@@ -78,13 +78,13 @@ extern int line_num;
    Um ponto e vírgula significa não fazer nada. */
 
 
-programa : PROGRAM IDENT SEMICOLON corpo ENDPOINT                           {;}
+programa : PROGRAM IDENT SEMICOLON corpo ENDPOINT                           {check($2);}
         ;
 corpo : dc BEG comandos END                                                 {;}
         ;
 dc : dc_c dc_v dc_p                                                         {;}
         ;
-dc_c : CONST IDENT EQUAL numero SEMICOLON dc_c                              {;}
+dc_c : CONST IDENT EQUAL numero SEMICOLON dc_c                              {check($2);}
         | /*vazio*/                                                         {;}
         ;
 dc_v : VAR variaveis COLON tipo_var SEMICOLON dc_v                          {;}
@@ -92,7 +92,7 @@ dc_v : VAR variaveis COLON tipo_var SEMICOLON dc_v                          {;}
         ;
 tipo_var : REAL                                                             {;}
         | INTEGER                                                           {;}
-variaveis : IDENT mais_var                                                  {;}
+variaveis : IDENT mais_var                                                  {check($1);}
         ;
 mais_var : COMMA variaveis                                                  {;}
         | /*vazio*/                                                         {;}
@@ -115,7 +115,7 @@ dc_loc : dc_v                                                               {;}
 lista_arg : OPEN_PAR argumentos CLOSE_PAR                                   {;}
         | /*vazio*/                                                         {;}
         ;
-argumentos : IDENT mais_ident                                               {;}
+argumentos : IDENT mais_ident                                               {check($1);}
 mais_ident : SEMICOLON argumentos                                           {;}
         | /*vazio*/                                                         {;}
         ;
@@ -129,10 +129,10 @@ cmd : READ OPEN_PAR variaveis CLOSE_PAR                                     {;}
         | WRITE OPEN_PAR variaveis CLOSE_PAR                                {;}
         | WHILE OPEN_PAR condicao CLOSE_PAR DO cmd                          {;}
         | IF condicao THEN cmd pfalsa                                       {;}
-        | IDENT ATTRIBUTION expressao                                       {;}
+        | IDENT ATTRIBUTION expressao                                       {check($1);}
         | IDENT lista_arg                                                   {;}
         | BEG comandos END                                                  {;}
-        | FOR IDENT ATTRIBUTION numero TO numero DO BEG comandos END        {;}
+        | FOR IDENT ATTRIBUTION numero TO numero DO BEG comandos END        {check($2);}
         ;
 condicao : expressao relacao expressao                                      {;}
         ;
@@ -164,7 +164,7 @@ mais_fatores : op_mul fator mais_fatores                                    {;}
 op_mul : MULT                                                               {;}
         | DIV                                                               {;}
         ;
-fator : IDENT                                                               {;}
+fator : IDENT                                                               {check($1);}
         | numero                                                            {;}
         | OPEN_PAR expressao CLOSE_PAR                                      {;}
         ;
@@ -179,23 +179,14 @@ numero : INTEGER_NUMBER                                                     {;}
 
 /* Código C inserido diretamente no arquivo gerado pelo yacc */
 
-void check(char* ident, char *expected)
+void check(char* ident)
 {  
     char *erro = (char*)malloc(256 * sizeof(char));
-    
-    if (strcmp(ident, expected))
+    int tam = strlen(ident);
+    if (tam > MAIORTAMANHO)
     {
-        sprintf(erro, "Era esperada a palavra reservada %s, encontrou-se %s",expected, ident);
+        sprintf(erro, "A variavel %s excede tamanho maximo de %d caracteres (Possui %d caracteres)\n",ident,MAIORTAMANHO,tam);
         yyerror(erro);
-    }
-    else
-    {
-        int tam = strlen(ident);
-        if (tam > MAIORTAMANHO)
-        {
-            sprintf(erro, "%s excede tamanho maximo de %d caracteres (Possui %d caracteres)\n",ident,MAIORTAMANHO,tam);
-            yyerror(erro);
-        }
     }
     free(erro);
 }
@@ -204,10 +195,6 @@ void check(char* ident, char *expected)
 int main(int argc, char const *argv[]){
     int ntoken;
     int tam;
-
-    /// Inicializa a TRIE apropriadamente
-    ///
-
     return yyparse ( );
 }
 void yyerror(const char *str)
