@@ -110,26 +110,30 @@ yytokentype test(char *s)
 [\n]																						{++line_num;}
 [0-9][^\.\(\)\[\]\ \n\r\t;:,\+\-\*\/<>#]*   												{
 																								char str[256];
-																								sprintf(str, "Inteiro mal formado (%s)\n",yytext);
+																								sprintf(str, "Inteiro mal formado (%s)",yytext);
 																								yyerror(str); 
+                                                yylval.str = strdup("skip");
 																								return ERROINT;
 																							};
 [0-9][^\.\(\)\[\]\ \n\r\t;:,\+\-\*\/<>#]*\.[^\.\(\)\[\]\ \n\r\t;:,\+\-\*\/<>#]*   			{
 																								char str[256];
-																								sprintf(str, "Float mal formado (%s)\n",yytext);
+																								sprintf(str, "Float mal formado (%s)",yytext);
 																								yyerror(str);
+                                                yylval.str = strdup("skip");
 																								return ERROFLOAT;
 																							};
 [A-Za-z][^\.\(\)\[\]\ \n\r\t;:,\+\-\*\/<>#]*   												{
 																								char str[256];
-																								sprintf(str, "Identificador mal formado (%s)\n",yytext);
+																								sprintf(str, "Identificador mal formado (%s)",yytext);
 																								yyerror(str);
+                                                yylval.str = strdup("skip");
 																								return ERROIDENT;
 																							};
 .                       																	{
 																								char str[256];
-																								sprintf(str, "Caracter desconhecido (%s)\n",yytext);
+																								sprintf(str, "Caracter desconhecido (%s)",yytext);
 																								yyerror(str);
+                                                yylval.str = strdup("skip");
 																								return UNEXPECTED_CHAR;
 																							};
 

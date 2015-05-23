@@ -11,7 +11,9 @@ using namespace std;
 // stuff from flex that bison needs to know about:
 extern "C" int yylex();
 extern "C" int yyparse();
+extern "C" int YYRECOVERING();
 extern "C" FILE *yyin;
+extern "C" FILE *yytext;
 void check(char* ident);
 extern int line_num;
 %}
@@ -79,36 +81,50 @@ extern int line_num;
 
 
 programa : PROGRAM IDENT SEMICOLON corpo ENDPOINT                           {check($2);}
+        | error SEMICOLON corpo ENDPOINT                                    {;}
+        | error ENDPOINT                                                    {;}
+        | error '\n'                                                        {;}
         ;
 corpo : dc BEG comandos END                                                 {;}
+        | error BEG comandos END                                            {;}
+        | error END                                                         {;}
         ;
 dc : dc_c dc_v dc_p                                                         {;}
         ;
 dc_c : CONST IDENT EQUAL numero SEMICOLON dc_c                              {check($2);}
+        | error EQUAL numero SEMICOLON dc_c                                 {;}
+        | error SEMICOLON dc_c                                              {;}
         | /*vazio*/                                                         {;}
         ;
 dc_v : VAR variaveis COLON tipo_var SEMICOLON dc_v                          {;}
+        | error COLON tipo_var SEMICOLON dc_v                               {;}
+        | error SEMICOLON dc_v                                              {;}
         | /*vazio*/                                                         {;}
         ;
 tipo_var : REAL                                                             {;}
         | INTEGER                                                           {;}
+        ;
 variaveis : IDENT mais_var                                                  {check($1);}
         ;
 mais_var : COMMA variaveis                                                  {;}
         | /*vazio*/                                                         {;}
         ;
 dc_p : PROCEDURE IDENT parametros SEMICOLON corpo_p dc_p                    {;}
+        | error SEMICOLON corpo_p dc_p                                      {;}
         | /*vazio*/                                                         {;}
         ;
 parametros : OPEN_PAR lista_par CLOSE_PAR                                   {;}
         | /*vazio*/                                                         {;}
         ;
-lista_par : variaveis COLON tipo_var mais_par                                   {;}
+lista_par : variaveis COLON tipo_var mais_par                               {;}
+        | error COLON tipo_var mais_par                                     {;}
         ;
 mais_par : SEMICOLON lista_par                                              {;}
         | /*vazio*/                                                         {;}
         ;
 corpo_p : dc_loc BEG comandos END SEMICOLON                                 {;}
+        | error BEG comandos END SEMICOLON                                  {;}
+        | error SEMICOLON                                                   {;}
         ;
 dc_loc : dc_v                                                               {;}
         ;
@@ -133,6 +149,9 @@ cmd : READ OPEN_PAR variaveis CLOSE_PAR                                     {;}
         | IDENT lista_arg                                                   {;}
         | BEG comandos END                                                  {;}
         | FOR IDENT ATTRIBUTION numero TO numero DO BEG comandos END        {check($2);}
+        | error THEN cmd pfalsa                                             {;}
+        | error END                                                         {;}
+        | error BEG                                                         {;}
         ;
 condicao : expressao relacao expressao                                      {;}
         ;
@@ -199,6 +218,10 @@ int main(int argc, char const *argv[]){
 }
 void yyerror(const char *str)
 {
-    fprintf(stderr,"Line %d: %s\n",line_num,str);
-    exit(-1);
+    if (!strcmp(yylval.str, "skip"))
+    {
+        yylval.str = strdup("");
+        return;
+    }
+    printf("%d: %s (found %s)\n", line_num, str, yytext);
 }

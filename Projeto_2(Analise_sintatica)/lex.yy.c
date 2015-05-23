@@ -949,47 +949,51 @@ YY_RULE_SETUP
 #line 111 "myscanner.l"
 {
 																								char str[256];
-																								sprintf(str, "Inteiro mal formado (%s)\n",yytext);
+																								sprintf(str, "Inteiro mal formado (%s)",yytext);
 																								yyerror(str); 
+                                                yylval.str = strdup("skip");
 																								return ERROINT;
 																							};
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 117 "myscanner.l"
+#line 118 "myscanner.l"
 {
 																								char str[256];
-																								sprintf(str, "Float mal formado (%s)\n",yytext);
+																								sprintf(str, "Float mal formado (%s)",yytext);
 																								yyerror(str);
+                                                yylval.str = strdup("skip");
 																								return ERROFLOAT;
 																							};
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 123 "myscanner.l"
+#line 125 "myscanner.l"
 {
 																								char str[256];
-																								sprintf(str, "Identificador mal formado (%s)\n",yytext);
+																								sprintf(str, "Identificador mal formado (%s)",yytext);
 																								yyerror(str);
+                                                yylval.str = strdup("skip");
 																								return ERROIDENT;
 																							};
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 129 "myscanner.l"
+#line 132 "myscanner.l"
 {
 																								char str[256];
-																								sprintf(str, "Caracter desconhecido (%s)\n",yytext);
+																								sprintf(str, "Caracter desconhecido (%s)",yytext);
 																								yyerror(str);
+                                                yylval.str = strdup("skip");
 																								return UNEXPECTED_CHAR;
 																							};
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 136 "myscanner.l"
+#line 140 "myscanner.l"
 ECHO;
 	YY_BREAK
-#line 993 "lex.yy.c"
+#line 997 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1984,7 +1988,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 136 "myscanner.l"
+#line 140 "myscanner.l"
 
 
 
