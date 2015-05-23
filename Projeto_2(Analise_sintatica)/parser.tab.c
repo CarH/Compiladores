@@ -2226,5 +2226,5 @@ void yyerror(const char *str)
         yylval.str = strdup("");
         return;
     }
-    printf("%d: %s (found %s)\n", line_num, str, yytext);
+    printf("Line: %d: %s (found %s)\n", line_num, str, yytext);
 }
