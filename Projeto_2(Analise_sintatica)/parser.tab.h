@@ -73,23 +73,24 @@ extern int yydebug;
     ERROINT = 283,
     ERROIDENT = 284,
     ERROFLOAT = 285,
-    PROGRAM = 286,
-    BEG = 287,
-    END = 288,
-    IF = 289,
-    ELSE = 290,
-    CONST = 291,
-    VAR = 292,
-    PROCEDURE = 293,
-    REAL = 294,
-    INTEGER = 295,
-    READ = 296,
-    WRITE = 297,
-    WHILE = 298,
-    DO = 299,
-    THEN = 300,
-    FOR = 301,
-    TO = 302
+    ERROTAM = 286,
+    PROGRAM = 287,
+    BEG = 288,
+    END = 289,
+    IF = 290,
+    ELSE = 291,
+    CONST = 292,
+    VAR = 293,
+    PROCEDURE = 294,
+    REAL = 295,
+    INTEGER = 296,
+    READ = 297,
+    WRITE = 298,
+    WHILE = 299,
+    DO = 300,
+    THEN = 301,
+    FOR = 302,
+    TO = 303
   };
 #endif
 
@@ -98,13 +99,13 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 24 "parser.y" /* yacc.c:1909  */
+#line 23 "parser.y" /* yacc.c:1909  */
 
     int numi;
     float numf;
     char *str;
 
-#line 108 "parser.tab.h" /* yacc.c:1909  */
+#line 109 "parser.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

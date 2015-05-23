@@ -80,6 +80,17 @@ yytokentype test(char *s)
     {
        return TO;
     }
+
+    int tam = strlen(s);
+    if (tam > MAIORTAMANHO)
+    {
+        char *erro = (char*)malloc(256 * sizeof(char));
+        sprintf(erro, "A variavel %s excede tamanho maximo de %d caracteres (Possui %d caracteres)\n",s,MAIORTAMANHO,tam);
+        yyerror(erro);
+        yylval.str = strdup("skip");
+        free(erro);
+        return ERROTAM;
+    }
     return IDENT;
 }
 %}

@@ -1,6 +1,6 @@
 #ifndef _MYSCANNER_
 #define _MYSCANNER_
-#define MAIORTAMANHO 50
+#define MAIORTAMANHO 1
 
 typedef struct trie trie;
 struct trie

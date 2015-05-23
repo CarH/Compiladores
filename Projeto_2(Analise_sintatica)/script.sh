@@ -14,14 +14,17 @@ while true; do
 	fi
 
 	echo "Compilando o scanner..."
-	lex myscanner.l
-	gcc lex.yy.c myscanner.c -o scanner -g
-
-	echo "Executando analise..."
-	./scanner < $x > result.out
-
+	bison -d parser.y
+	flex myscanner.l
+	echo "Compilando o parser..."
+	g++ parser.tab.c lex.yy.c -std=c++11 -lfl -o parser
+	echo "Executando teste...
+	----------------------------------------------------
+	"
+	./parser < $x > result.out
 	cat result.out
-
-	rm -rf myscanner
-	rm -rf result.out
+	echo "
+	----------------------------------------------------"
+	rm 	parser
+	rm  result.out
 done
