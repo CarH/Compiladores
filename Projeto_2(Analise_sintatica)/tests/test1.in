@@ -1,18 +1,9 @@
-program nome1;
-{exemplo 1}
-var a, a1, b: integer;
+program lalg; {{{{{COMENTARIO}}}}}
+{entrada}
+var 34.3@: integer;
 begin
-read(a);
-a1:= program*2;
-while (a1>0) do
-begin
-write(a1);
-a1:= a1-1;
-end;
-for b:=1 to 10 do1
-begin1
-b:=b+2;
-a:=a-1;
-end;
-if a<> b then write(a);
-enda.
+readd(a, @, 1);
+
+x:=y*(3*5+4*6-9.7);
+
+end.

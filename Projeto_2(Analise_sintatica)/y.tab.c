@@ -85,7 +85,7 @@ extern int line_num;
 
 
 /* Line 336 of yacc.c  */
-#line 89 "parser.tab.c"
+#line 89 "y.tab.c"
 
 # ifndef YY_NULL
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -104,9 +104,9 @@ extern int line_num;
 #endif
 
 /* In a future release of Bison, this section will be replaced
-   by #include "parser.tab.h".  */
-#ifndef YY_PARSER_TAB_H
-# define YY_PARSER_TAB_H
+   by #include "y.tab.h".  */
+#ifndef YY_Y_TAB_H
+# define YY_Y_TAB_H
 /* Enabling traces.  */
 #ifndef YYDEBUG
 # define YYDEBUG 0
@@ -169,6 +169,54 @@ extern int yydebug;
      TO = 303
    };
 #endif
+/* Tokens.  */
+#define ERRODESC 258
+#define IDENT 259
+#define SEMICOLON 260
+#define ENDPOINT 261
+#define ATTRIBUTION 262
+#define CONST_IDENT 263
+#define COLON 264
+#define TYPE 265
+#define COMMA 266
+#define PROCEDURE_IDENT 267
+#define OPEN_PAR 268
+#define CLOSE_PAR 269
+#define EQUAL 270
+#define DIF 271
+#define GREATER_EQUAL 272
+#define LESSER_EQUAL 273
+#define GREATER 274
+#define LESSER 275
+#define PLUS 276
+#define MINUS 277
+#define MULT 278
+#define DIV 279
+#define INTEGER_NUMBER 280
+#define REAL_NUMBER 281
+#define UNEXPECTED_CHAR 282
+#define ERROINT 283
+#define ERROIDENT 284
+#define ERROFLOAT 285
+#define ERROTAM 286
+#define PROGRAM 287
+#define BEG 288
+#define END 289
+#define IF 290
+#define ELSE 291
+#define CONST 292
+#define VAR 293
+#define PROCEDURE 294
+#define REAL 295
+#define INTEGER 296
+#define READ 297
+#define WRITE 298
+#define WHILE 299
+#define DO 300
+#define THEN 301
+#define FOR 302
+#define TO 303
+
 
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
@@ -185,7 +233,7 @@ typedef union YYSTYPE
 
 
 /* Line 350 of yacc.c  */
-#line 189 "parser.tab.c"
+#line 237 "y.tab.c"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
@@ -221,13 +269,13 @@ int yyparse ();
 #endif
 #endif /* ! YYPARSE_PARAM */
 
-#endif /* !YY_PARSER_TAB_H  */
+#endif /* !YY_Y_TAB_H  */
 
 /* Copy the second part of user declarations.  */
 
 
 /* Line 353 of yacc.c  */
-#line 231 "parser.tab.c"
+#line 279 "y.tab.c"
 
 #ifdef short
 # undef short
@@ -2195,7 +2243,7 @@ yyreduce:
 
 
 /* Line 1788 of yacc.c  */
-#line 2199 "parser.tab.c"
+#line 2247 "y.tab.c"
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires

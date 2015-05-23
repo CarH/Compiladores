@@ -17,14 +17,16 @@ while true; do
 	bison -d parser.y
 	flex myscanner.l
 	echo "Compilando o parser..."
-	g++ parser.tab.c lex.yy.c -std=c++11 -lfl -o parser
-	echo "Executando teste...
-	----------------------------------------------------
+	g++ parser.tab.c lex.yy.c -lfl -o parser
+	echo 
+	echo "----------------------------------------------------"
+	echo " Executando teste..."
+	echo "----------------------------------------------------
 	"
 	./parser < $x > result.out
 	cat result.out
-	echo "
-	----------------------------------------------------"
-	rm 	parser
-	rm  result.out
+	echo
+	echo "----------------------------------------------------"
+	rm -f parser
+	rm  -f result.out
 done
