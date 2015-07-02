@@ -21,7 +21,7 @@ char needed[10000];
 
 %locations
 // %define parse.error verbose
-///home/sanches/projects/Compiladores/Projeto_3(Analise_sintatica)/tests/test1.in
+///home/sanches/projects/Compiladores/Projeto_3(Analise_sintatica)/tests/test2.in
 %union 
 {
     int numi;
@@ -83,7 +83,7 @@ char needed[10000];
    Um ponto e vírgula significa não fazer nada. */
 
 
-programa : PROGRAM IDENT SEMICOLON corpo ENDPOINT                           {sprintf(found, "%s %s %s %s %d\n", $1, $2, $3, $5); yyerror(found);}
+programa : SEMICOLON corpo ENDPOINT                           {sprintf(found, "%s %s\n", $1,$3); yyerror(found);}
         | error SEMICOLON corpo ENDPOINT                                    {;}
         | error ENDPOINT                                                    {;}
         | error '\n'                                                        {;}

@@ -851,92 +851,92 @@ return {test(yytext)};
 case 2:
 YY_RULE_SETUP
 #line 100 "myscanner.l"
-return REAL_NUMBER;
+{yylval.str = strdup(yytext);return REAL_NUMBER;}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
 #line 101 "myscanner.l"
-return INTEGER_NUMBER;
+{yylval.str = strdup(yytext);		return INTEGER_NUMBER;}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
 #line 102 "myscanner.l"
-return ATTRIBUTION;
+{yylval.str = strdup(yytext); return ATTRIBUTION;}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
 #line 103 "myscanner.l"
-return DIF;
+{yylval.str = strdup(yytext); return DIF;}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
 #line 104 "myscanner.l"
-return GREATER_EQUAL;
+{yylval.str = strdup(yytext); return GREATER_EQUAL;}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
 #line 105 "myscanner.l"
-return LESSER_EQUAL;
+{yylval.str = strdup(yytext);return LESSER_EQUAL;}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
 #line 106 "myscanner.l"
-return GREATER;
+{yylval.str = strdup(yytext);return GREATER;}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
 #line 107 "myscanner.l"
-return LESSER;
+{yylval.str = strdup(yytext);return LESSER;}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
 #line 108 "myscanner.l"
-return SEMICOLON;
+{yylval.str = strdup(yytext); return SEMICOLON;}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
 #line 109 "myscanner.l"
-return ENDPOINT;
+{yylval.str = strdup(yytext);return ENDPOINT;}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
 #line 110 "myscanner.l"
-return COLON;
+{yylval.str = strdup(yytext);return COLON;}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
 #line 111 "myscanner.l"
-return COMMA;
+{yylval.str = strdup(yytext);return COMMA;}
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
 #line 112 "myscanner.l"
-return OPEN_PAR;  
+{yylval.str = strdup(yytext);return OPEN_PAR; }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
 #line 113 "myscanner.l"
-return CLOSE_PAR;
+{yylval.str = strdup(yytext);return CLOSE_PAR;}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
 #line 114 "myscanner.l"
-return PLUS;
+{yylval.str = strdup(yytext);return PLUS;}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
 #line 115 "myscanner.l"
-return MINUS;
+{yylval.str = strdup(yytext);return MINUS;}
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
 #line 116 "myscanner.l"
-return MULT;
+{yylval.str = strdup(yytext);return MULT;}
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
 #line 117 "myscanner.l"
-return DIV;
+{yylval.str = strdup(yytext);return DIV;}
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
