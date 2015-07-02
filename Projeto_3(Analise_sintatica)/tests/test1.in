@@ -1,0 +1,9 @@
+program lalg; {{{{{COMENTARIO}}}}}
+{entrada}
+var 34.3@: integer;
+begin
+readd(a, @, 1);
+
+x:=y*(3*5+4*6-9.7);
+
+end.
