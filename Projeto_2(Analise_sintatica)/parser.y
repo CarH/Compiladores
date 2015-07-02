@@ -5,6 +5,7 @@
 #include <iostream>
 #include "myscanner.h"
 
+
 using namespace std;
 
 
@@ -15,6 +16,12 @@ extern "C" int YYRECOVERING();
 extern "C" FILE *yyin;
 extern "C" FILE *yytext;
 extern int line_num;
+
+typedef struct Element
+{
+    
+};
+
 %}
 
 %locations
@@ -211,3 +218,6 @@ void yyerror(const char *str)
     }
     printf("Line: %d: %s (found %s)\n", line_num, str, yytext);
 }
+
+
+

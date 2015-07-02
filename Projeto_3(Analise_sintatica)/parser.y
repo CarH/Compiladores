@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <cstring>
 #include <iostream>
+#include <string>
 #include "myscanner.h"
 
 using namespace std;
@@ -19,7 +20,7 @@ char found[10000];
 char needed[10000];
 %}
 
-%locations
+//%locations
 // %define parse.error verbose
 ///home/sanches/projects/Compiladores/Projeto_3(Analise_sintatica)/tests/test1.in
 %union 
@@ -76,6 +77,11 @@ char needed[10000];
 %token <str>THEN
 %token <str>FOR
 %token <str>TO
+
+// Struct to the symbolTable:
+
+
+
 %%
 
 /* Gramática da linguagem. 
@@ -83,7 +89,7 @@ char needed[10000];
    Um ponto e vírgula significa não fazer nada. */
 
 
-programa : PROGRAM IDENT SEMICOLON corpo ENDPOINT                           {sprintf(found, "%s %s %s %s %d\n", $1, $2, $3, $5); yyerror(found);}
+programa : PROGRAM IDENT SEMICOLON corpo ENDPOINT                           {;}
         | error SEMICOLON corpo ENDPOINT                                    {;}
         | error ENDPOINT                                                    {;}
         | error '\n'                                                        {;}
