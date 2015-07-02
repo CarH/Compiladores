@@ -97,24 +97,24 @@ yytokentype test(char *s)
 %%
 
 [a-zA-Z][_a-zA-Z0-9]*   																	return {test(yytext)};
-[0-9]+(\.)[0-9]+   	 																		return REAL_NUMBER;
-(0|[1-9][0-9]*)            																	return INTEGER_NUMBER;
-(:=)																						return ATTRIBUTION;
-(<>)																						return DIF;
-(>=)																						return GREATER_EQUAL;
-(<=)																						return LESSER_EQUAL;
-(>)																							return GREATER;
-(<)																							return LESSER;
-(;)																							return SEMICOLON;
-(\.)																						return ENDPOINT;
-(:)																							return COLON;
-(,)																							return COMMA;
-(\()																						return OPEN_PAR;  
-(\))																						return CLOSE_PAR;
-(\+)																						return PLUS;
-(\-)																						return MINUS;
-(\*)																						return MULT;
-(\/)																						return DIV;
+[0-9]+(\.)[0-9]+   	 																		{yylval.str = strdup(yytext);return REAL_NUMBER;}
+(0|[1-9][0-9]*)            															{yylval.str = strdup(yytext);		return INTEGER_NUMBER;}
+(:=)																						{yylval.str = strdup(yytext); return ATTRIBUTION;}
+(<>)																						{yylval.str = strdup(yytext); return DIF;}
+(>=)																						{yylval.str = strdup(yytext); return GREATER_EQUAL;}
+(<=)																						{yylval.str = strdup(yytext);return LESSER_EQUAL;}
+(>)																							{yylval.str = strdup(yytext);return GREATER;}
+(<)																							{yylval.str = strdup(yytext);return LESSER;}
+(\;)																						{yylval.str = strdup(yytext); return SEMICOLON;}
+(\.)																						{yylval.str = strdup(yytext);return ENDPOINT;}
+(:)																							{yylval.str = strdup(yytext);return COLON;}
+(,)																							{yylval.str = strdup(yytext);return COMMA;}
+(\()																						{yylval.str = strdup(yytext);return OPEN_PAR; }
+(\))																						{yylval.str = strdup(yytext);return CLOSE_PAR;}
+(\+)																						{yylval.str = strdup(yytext);return PLUS;}
+(\-)																						{yylval.str = strdup(yytext);return MINUS;}
+(\*)																						{yylval.str = strdup(yytext);return MULT;}
+(\/)																						{yylval.str = strdup(yytext);return DIV;}
 \{.*\}																						;
 [\ \t]                																		;
 [\n]																						{++line_num;}

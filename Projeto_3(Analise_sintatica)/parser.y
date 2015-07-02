@@ -88,7 +88,6 @@ char needed[10000];
    Cada regra é associada a uma ação, descrita em código C. 
    Um ponto e vírgula significa não fazer nada. */
 
-
 programa : PROGRAM IDENT SEMICOLON corpo ENDPOINT                           {;}
         | error SEMICOLON corpo ENDPOINT                                    {;}
         | error ENDPOINT                                                    {;}
