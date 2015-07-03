@@ -1,14 +1,30 @@
-program p5;
-const cte = 90;
-var b,c : integer;
-procedure meu_proc(x: integer);
+program exGlobal;
+var
+   a, b, c: integer;
+procedure display(a, c, f : integer);
+var
+   x, y, z: integer;
 begin
-    x := 10;
+   { local variables }
+   w := 10;
+   y := 20;
+   z := x + y;
+  { global variables }
+   a := 30;
+   b:= 40;
+   c:= a + b;
+   write(c);
 end;
+
+procedure d;
+var t: real;
 begin
-    a := 10;
-    b := 20;
-    c := 30;
-    meu_proc(a);
-    meu_proc(a;b); {Mais parametros que o esperado}
+	a := 9+t;
+end;
+
+begin
+   a:= 100;
+   b:= 200;
+   c:= 300;
+   display(a; b; c);
 end.

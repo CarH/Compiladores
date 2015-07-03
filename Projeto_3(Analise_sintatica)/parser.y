@@ -46,7 +46,6 @@ struct Element
 
 int CURR_SCOPE = 0;
 unordered_map<int, unordered_map<string, Element> > symbolTableVector;
-// unordered_map<string, Element> symbolTable;
 
 void insert(string cadeia, int token, string type, string cat, string val, int line, int scope, int numParams);
 bool find(int scope, string cadeia);
@@ -80,6 +79,7 @@ string REAL_TYPE        = "real";
 ****************************************/
 string t_num;
 string t_type;
+vector<string> t_type_params;
 vector<string> t_cadeias;
 
 /****************************************
@@ -101,7 +101,6 @@ map<string, string> m;
 
 %locations
 %define parse.error verbose
-///home/sanches/projects/Compiladores/Projeto_3(Analise_sintatica)/tests/test2.in
 %union 
 {
     int numi;
@@ -160,15 +159,11 @@ map<string, string> m;
    Um ponto e vírgula significa não fazer nada. */
 
 /* REGRA 1: <programa> ::= program ident ; <corpo> . */
-programa: PROGRAM IDENT SEMICOLON corpo ENDPOINT                           {   
-                                                                                // CURR_SCOPE = 0;
-                                                                                printf("IDENT: %d\n", IDENT);
-                                                                                cout << "find(): "<< find(CURR_SCOPE, $2) << "\n";
-                                                                                insert($2, IDENT, NONE, CAT_PROGRAM_NAME, NONE, line_num, CURR_SCOPE, 0);
-                                                                                cout << "find(): "<< find(CURR_SCOPE, $2) << "\n";
-                                                                                
+programa: PROGRAM IDENT                                                     {
+                                                                                insert($2, IDENT, NONE, CAT_PROGRAM_NAME, NONE, line_num, CURR_SCOPE, 0);                                                                                
                                                                                 printSymbolTable();
                                                                             }
+          SEMICOLON corpo ENDPOINT                                          {;}
 
         | error SEMICOLON corpo ENDPOINT                                    {;}
         ;
@@ -220,7 +215,6 @@ tipo_var : REAL                                                             {
                                                                                             insert(t_cadeias[i], IDENT, t_type, CAT_VARIABLE, NONE, line_num, CURR_SCOPE, 0);
                                                                                         }
                                                                                         // insert procedure parameter intro procParams
-                                                                                        // TODO copiar isso pro INTEGER tbm !!!
                                                                                         if (is_proc_parameter && is_valid_procedure){
                                                                                             Element elem;
                                                                                             elem.cadeia = t_cadeias[i];
@@ -228,7 +222,7 @@ tipo_var : REAL                                                             {
                                                                                             unordered_map<string, vector<Element> >::iterator it;
                                                                                             it = procParams.find(curr_proc_name);
                                                                                             it->second.push_back(elem);
-                                                                                            cout << " >> Inseriu " << t_cadeias[i] << " SCOPE: " << CURR_SCOPE << "\n";
+                                                                                            if(DEBUG) cout << " >> Inseriu " << t_cadeias[i] << " SCOPE: " << CURR_SCOPE << "\n";
                                                                                         }
                                                                                     }
                                                                                 }
@@ -248,7 +242,6 @@ tipo_var : REAL                                                             {
                                                                                             insert(t_cadeias[i], IDENT, t_type, CAT_VARIABLE, NONE, line_num, CURR_SCOPE, 0);
                                                                                         }
                                                                                         if (is_proc_parameter && is_valid_procedure){
-                                                                                            // pair<string, vector<Element> > item ();
                                                                                             Element elem;
                                                                                             elem.cadeia = t_cadeias[i];
                                                                                             elem.type   = t_type;
@@ -304,15 +297,17 @@ dc_p    : PROCEDURE IDENT                                                   {
 
          SEMICOLON corpo_p                                                  {
                                                                                 // TODO delete the symbolTable from the CURR_SCOPE
+                                                                                printSymbolTable();
+                                                                                if(DEBUG) cout << " ! REMOVING SCOPE " << CURR_SCOPE << "\n";
+                                                                                symbolTableVector.erase(CURR_SCOPE);
+                                                                                printSymbolTable();
                                                                                 CURR_SCOPE--;
                                                                                 is_procedure = false;
                                                                             }
 
          dc_p                                                               {
-                                                                                printf(" +++++ REGRA 9\n");
-                                                                                // TODO atualizar numParams do procedimento na symbolTable!!
                                                                                 int numParams = getNumberOfParams($2);
-                                                                                
+                                                                                                                                                                
                                                                             }
         | error parametros SEMICOLON corpo_p dc_p                           {;}
         | error SEMICOLON corpo_p dc_p                                      {;}
@@ -350,7 +345,7 @@ dc_loc : dc_v                                                               {;}
 
 /* REGRA 15: <lista_arg> ::= ( <argumentos> ) | λ */        
 lista_arg : OPEN_PAR                                                        {
-                                                                                t_type.clear();
+                                                                                t_type_params.clear();
                                                                             } 
           argumentos CLOSE_PAR                                              {;}
         | OPEN_PAR error CLOSE_PAR                                          {;}
@@ -360,12 +355,12 @@ lista_arg : OPEN_PAR                                                        {
 /* REGRA 16: <argumentos> ::= ident <mais_ident> */
 argumentos : IDENT                                                          {
                                                                                 if(find($1, CAT_VARIABLE)){
-                                                                                    // t_type.push_back(getType($1, CAT_VARIABLE));// TODO
+                                                                                    t_type_params.push_back(getType($1, CAT_VARIABLE)); // TODO
                                                                                 } else {
-                                                                                    cout << MSG_BEGIN_ERROR << line_num << ": " << $1 << " não foi declarado.\n";
+                                                                                    cout << MSG_BEGIN_ERROR << line_num << ": '" << $1 << "' não foi declarado.\n";
                                                                                 }
                                                                             }
-            mais_ident                                               {;}
+            mais_ident                                                      {;}
         ;
 
 /* REGRA 17: <mais_ident> ::= ; <argumentos> | λ */
@@ -398,13 +393,13 @@ cmd     : READ OPEN_PAR variaveis CLOSE_PAR                                 {;}
         | IF condicao THEN cmd pfalsa                                       {;}
         | IDENT ATTRIBUTION                                                 {
                                                                                 if (!find($1, CAT_VARIABLE)){
-                                                                                    cout << MSG_BEGIN_ERROR << line_num << ": variável não declarada.\n";
+                                                                                    cout << MSG_BEGIN_ERROR << line_num << ": variável '"<< $1 <<"' não declarada.\n";
                                                                                 }
                                                                             } 
           expressao                                                         {;}
-        | IDENT                                                             {
+        | IDENT                                                             {   /* Procedure */
                                                                                 if (!find($1, CAT_PROCEDURE)){
-                                                                                    cout << MSG_BEGIN_ERROR << line_num << " procedimento não declarado.\n";
+                                                                                    cout << MSG_BEGIN_ERROR << line_num << ": procedimento '"<< $1 <<"' não declarado.\n";
                                                                                 }
                                                                             }
           lista_arg                                                         {;}
@@ -660,6 +655,7 @@ bool find(string cadeia, string category) {
     unordered_map<string, Element>::iterator it2;
     it1 = symbolTableVector.find(CURR_SCOPE);
 
+    // current scope
     if (it1 != symbolTableVector.end()) {
         it2 = it1->second.find(cadeia);
         if (it2 != it1->second.end()){
@@ -668,6 +664,20 @@ bool find(string cadeia, string category) {
             }
         }
     }
+
+    // global scope
+    it1 = symbolTableVector.find(0);
+
+    if (it1 != symbolTableVector.end()) {
+        it2 = it1->second.find(cadeia);
+        if (it2 != it1->second.end()){
+            if (it2->second.cat == category) {
+                return true;
+            }
+        }
+    }
+
+
     return false;
 }
 
@@ -724,6 +734,18 @@ string getType(string cadeia, string category) {
             }
         }
     }
+    
+    // global scope
+    it1 = symbolTableVector.find(0);
+
+    if (it1 != symbolTableVector.end()) {
+        it2 = it1->second.find(cadeia);
+        if (it2 != it1->second.end()){
+            if (it2->second.cat == category) {
+                return it2->second.type;
+            }
+        }
+    }
     return NULL;
 }
 
@@ -754,7 +776,7 @@ Element getElement(string cadeia){
 
 
 // Check if the number of parameters is right and the type of the parameters
-// void checkProcedureParameters(string procName, ) {
+void checkProcedureParameters(string procName, string types) {
 
-// }
+}
 /*****************************************************************************************/
