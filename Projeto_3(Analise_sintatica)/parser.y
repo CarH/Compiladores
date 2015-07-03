@@ -56,7 +56,7 @@ void printProcParameters(string procName);
 Element getElement(string cadeia);
 bool find(string cadeia, string category);
 string getType(string cadeia, string category);
-
+void checkProcedureParameters(string procName, vector<string> types);
 
 /****************************************
 |   Definitions of some attributes      |
@@ -397,12 +397,14 @@ cmd     : READ OPEN_PAR variaveis CLOSE_PAR                                 {;}
                                                                                 }
                                                                             } 
           expressao                                                         {;}
-        | IDENT                                                             {   /* Procedure */
+        | IDENT lista_arg                                                   {
+                                                                                /* Procedure */
                                                                                 if (!find($1, CAT_PROCEDURE)){
                                                                                     cout << MSG_BEGIN_ERROR << line_num << ": procedimento '"<< $1 <<"' não declarado.\n";
-                                                                                }
+                                                                                } else {
+                                                                                    checkProcedureParameters($1, t_type_params);
+                                                                                }   
                                                                             }
-          lista_arg                                                         {;}
         | BEG comandos END                                                  {;}
         | FOR IDENT ATTRIBUTION numero TO numero DO BEG comandos END        {;}
         ;
@@ -568,7 +570,7 @@ void yyerror(const char *str)
             expected += " também são opções validas )";
         }
 
-        printf("Linha %d: Esperava-se encontrar %s porém encontrou-se '%s'\n", line_num, expected.c_str(), yylval.str); // qq coisa mudar yylval para yytext
+        printf("[Erro] Linha %d: Esperava-se encontrar %s porém encontrou-se '%s'\n", line_num, expected.c_str(), yylval.str); // qq coisa mudar yylval para yytext
     }
     else
     {
@@ -734,7 +736,7 @@ string getType(string cadeia, string category) {
             }
         }
     }
-    
+
     // global scope
     it1 = symbolTableVector.find(0);
 
@@ -776,7 +778,28 @@ Element getElement(string cadeia){
 
 
 // Check if the number of parameters is right and the type of the parameters
-void checkProcedureParameters(string procName, string types) {
+void checkProcedureParameters(string procName, vector<string> types) {
+    if(DEBUG) printProcParameters(procName);
+
+
+    unordered_map<string, vector<Element> >::iterator it;
+    it = procParams.find(procName);
+    if (it != procParams.end()){
+
+        // Check the number of parameters:
+        if (it->second.size() > types.size() || it->second.size() < types.size()) {
+            cout << MSG_BEGIN_ERROR << line_num << ": Esperava-se " << it->second.size() << " argumento(s), mas encontrou-se " << types.size() << " argumento(s)\n";
+            return;
+        }
+
+        // Check the type of the parameters:
+        for (int i = 0; i < it->second.size(); i++) { // For each param
+            if (it->second[i].type != types[i]){
+                cout << MSG_BEGIN_ERROR << line_num << ": Tipo inválido de argumento. Esperava-se tipo " << it->second[i].type << ", mas o argumento " << i+1 << " é do tipo " << types[i] << "\n";
+            }
+            cout << "\tcadeia: " << it->second[i].cadeia << " , type: " << it->second[i].type << "\n";
+        }
+    }
 
 }
 /*****************************************************************************************/
