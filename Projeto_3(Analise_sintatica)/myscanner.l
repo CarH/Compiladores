@@ -1,10 +1,12 @@
 %{  
 #include "myscanner.h"
+#include <string.h>
 #include "parser.tab.h"
 #define YY_DECL extern "C" int yylex()
 using namespace std;
 extern void yyerror (const char *s);
 char str[10000];
+
 
 int line_num = 1;
 
@@ -93,7 +95,6 @@ yytokentype test(char *s)
     return IDENT;
 }
 %}
-
 %%
 
 [a-zA-Z][_a-zA-Z0-9]*   																	return {test(yytext)};

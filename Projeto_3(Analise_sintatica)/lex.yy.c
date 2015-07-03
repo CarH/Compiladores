@@ -397,11 +397,13 @@ char *yytext;
 #define INITIAL 0
 #line 2 "myscanner.l"
 #include "myscanner.h"
+#include <string.h>
 #include "parser.tab.h"
 #define YY_DECL extern "C" int yylex()
 using namespace std;
 extern void yyerror (const char *s);
 char str[10000];
+
 
 int line_num = 1;
 
@@ -489,7 +491,7 @@ yytokentype test(char *s)
     }
     return IDENT;
 }
-#line 493 "lex.yy.c"
+#line 495 "lex.yy.c"
 
 /* Macros after this point can all be overridden by user definitions in
  * section 1.
@@ -651,10 +653,10 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
 
-#line 97 "myscanner.l"
+#line 98 "myscanner.l"
 
 
-#line 658 "lex.yy.c"
+#line 660 "lex.yy.c"
 
 	if ( yy_init )
 		{
@@ -739,117 +741,117 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 99 "myscanner.l"
+#line 100 "myscanner.l"
 return {test(yytext)};
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 100 "myscanner.l"
+#line 101 "myscanner.l"
 {yylval.str = strdup(yytext);return REAL_NUMBER;}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 101 "myscanner.l"
+#line 102 "myscanner.l"
 {yylval.str = strdup(yytext);		return INTEGER_NUMBER;}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 102 "myscanner.l"
+#line 103 "myscanner.l"
 {yylval.str = strdup(yytext); return ATTRIBUTION;}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 103 "myscanner.l"
+#line 104 "myscanner.l"
 {yylval.str = strdup(yytext); return DIF;}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 104 "myscanner.l"
+#line 105 "myscanner.l"
 {yylval.str = strdup(yytext); return GREATER_EQUAL;}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 105 "myscanner.l"
+#line 106 "myscanner.l"
 {yylval.str = strdup(yytext);return LESSER_EQUAL;}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 106 "myscanner.l"
+#line 107 "myscanner.l"
 {yylval.str = strdup(yytext);return GREATER;}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 107 "myscanner.l"
+#line 108 "myscanner.l"
 {yylval.str = strdup(yytext);return LESSER;}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 108 "myscanner.l"
+#line 109 "myscanner.l"
 {yylval.str = strdup(yytext); return SEMICOLON;}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 109 "myscanner.l"
+#line 110 "myscanner.l"
 {yylval.str = strdup(yytext);return ENDPOINT;}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 110 "myscanner.l"
+#line 111 "myscanner.l"
 {yylval.str = strdup(yytext);return COLON;}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 111 "myscanner.l"
+#line 112 "myscanner.l"
 {yylval.str = strdup(yytext);return COMMA;}
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 112 "myscanner.l"
+#line 113 "myscanner.l"
 {yylval.str = strdup(yytext);return OPEN_PAR; }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 113 "myscanner.l"
+#line 114 "myscanner.l"
 {yylval.str = strdup(yytext);return CLOSE_PAR;}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 114 "myscanner.l"
+#line 115 "myscanner.l"
 {yylval.str = strdup(yytext);return PLUS;}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 115 "myscanner.l"
+#line 116 "myscanner.l"
 {yylval.str = strdup(yytext);return MINUS;}
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 116 "myscanner.l"
+#line 117 "myscanner.l"
 {yylval.str = strdup(yytext);return MULT;}
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 117 "myscanner.l"
+#line 118 "myscanner.l"
 {yylval.str = strdup(yytext);return DIV;}
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 118 "myscanner.l"
+#line 119 "myscanner.l"
 ;
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 119 "myscanner.l"
+#line 120 "myscanner.l"
 ;
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 120 "myscanner.l"
+#line 121 "myscanner.l"
 {++line_num;}
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 121 "myscanner.l"
+#line 122 "myscanner.l"
 {
 																								sprintf(str, "Linha %d: Inteiro mal formado (%s)", line_num, yytext);
 																								yyerror(str); 
@@ -859,7 +861,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 127 "myscanner.l"
+#line 128 "myscanner.l"
 {
 																								sprintf(str, "Linha %d: Float mal formado (%s)",line_num, yytext);
 																								yyerror(str);
@@ -869,7 +871,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 133 "myscanner.l"
+#line 134 "myscanner.l"
 {
 																								sprintf(str, "Linha %d: Identificador mal formado (%s)",line_num, yytext);
 																								yyerror(str);
@@ -879,7 +881,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 139 "myscanner.l"
+#line 140 "myscanner.l"
 {
 																								sprintf(str, "Linha %d: Caracter desconhecido (%s)",line_num, yytext);
 																								yyerror(str);
@@ -889,10 +891,10 @@ YY_RULE_SETUP
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 146 "myscanner.l"
+#line 147 "myscanner.l"
 ECHO;
 	YY_BREAK
-#line 896 "lex.yy.c"
+#line 898 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1782,7 +1784,7 @@ int main()
 	return 0;
 	}
 #endif
-#line 146 "myscanner.l"
+#line 147 "myscanner.l"
 
 
 

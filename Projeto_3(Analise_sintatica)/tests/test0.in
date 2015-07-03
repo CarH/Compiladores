@@ -1,0 +1,8 @@
+program lalg; {{{{{COMENTARIO}}}}}
+{entrada}
+var x, y, z: integer;
+begin
+
+x:=y*(3*5+4*6-9.7);
+
+end.

@@ -12,9 +12,6 @@ struct trie
 typedef struct token token;
 
 void yyerror (const char *s);
-void alloc(trie ** node);
-void insert(trie * node, char * word);
-int query(trie * node, char * word);
-int initializeTrie ();
+
 
 #endif
