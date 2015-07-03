@@ -28,7 +28,6 @@ char needed[10000];
 string tmp;
 string tmp2;
 
-
 /****************************************************************************************
                                 'SYMBOL TABLE'
                             TODO: por em outro .h 
@@ -58,7 +57,7 @@ void printProcParameters(string procName);
 Element getElement(string cadeia);
 bool find(string cadeia, string category);
 string getType(string cadeia, string category);
-void checkProcedureParameters(string procName, vector<string> types);
+
 
 /****************************************
 |   Definitions of some attributes      |
@@ -93,7 +92,6 @@ bool is_proc_parameter = false;
 bool is_valid_procedure = false;
 bool is_procedure = false;
 bool is_division = false;
-
 
 
 string MSG_BEGIN_ERROR = "[Erro] Linha ";
@@ -165,7 +163,7 @@ map<string, string> m;
 /* REGRA 1: <programa> ::= program ident ; <corpo> . */
 programa: PROGRAM IDENT                                                     {
                                                                                 insert($2, IDENT, NONE, CAT_PROGRAM_NAME, NONE, line_num, CURR_SCOPE, 0);                                                                                
-                                                                                printSymbolTable();
+                                                                                // printSymbolTable();
                                                                             }
           SEMICOLON corpo ENDPOINT                                          {;}
 
@@ -188,7 +186,7 @@ dc      : dc_c dc_v dc_p                                                    {;}
 dc_c    : CONST IDENT EQUAL numero SEMICOLON dc_c                           {
                                                                                // printf("numero: %s\n", $4);
                                                                                 insert($2, IDENT, t_type, CAT_CONSTANT, t_num, line_num, CURR_SCOPE, 0);
-                                                                                printSymbolTable();
+                                                                                // printSymbolTable();
                                                                             }
         | error numero SEMICOLON dc_c                                       {;}
         | error SEMICOLON dc_c                                              {;}
@@ -252,7 +250,7 @@ tipo_var : REAL                                                             {
                                                                                             unordered_map<string, vector<Element> >::iterator it;
                                                                                             it = procParams.find(curr_proc_name);
                                                                                             it->second.push_back(elem);
-                                                                                            cout << " >> Inseriu " << t_cadeias[i] << " SCOPE: " << CURR_SCOPE << "\n";
+                                                                                            if(DEBUG) cout << " >> Inseriu " << t_cadeias[i] << " SCOPE: " << CURR_SCOPE << "\n";
 
                                                                                         }
                                                                                     }
@@ -296,20 +294,23 @@ dc_p    : PROCEDURE IDENT                                                   {
                                                                             } 
          parametros                                                         {
                                                                                 is_proc_parameter = false;
-                                                                                printProcParameters(curr_proc_name);
+                                                                                //printProcParameters(curr_proc_name);
                                                                             }
 
          SEMICOLON corpo_p                                                  {
                                                                                 // TODO delete the symbolTable from the CURR_SCOPE
-                                                                                printSymbolTable();
+                                                                                // printSymbolTable();
                                                                                 if(DEBUG) cout << " ! REMOVING SCOPE " << CURR_SCOPE << "\n";
                                                                                 symbolTableVector.erase(CURR_SCOPE);
-                                                                                printSymbolTable();
+                                                                                // printSymbolTable();
                                                                                 CURR_SCOPE--;
                                                                                 is_procedure = false;
                                                                             }
 
-         dc_p                                                               {;}
+         dc_p                                                               {
+                                                                                int numParams = getNumberOfParams($2);
+                                                                                                                                                                
+                                                                            }
         | error parametros SEMICOLON corpo_p dc_p                           {;}
         | error SEMICOLON corpo_p dc_p                                      {;}
         | error dc_p                                                        {;}
@@ -408,14 +409,12 @@ cmd     : READ OPEN_PAR variaveis CLOSE_PAR                                 {;}
                                                                                 }
                                                                                 tmp.clear();
                                                                             }
-        | IDENT lista_arg                                                   {
-                                                                                /* Procedure */
+        | IDENT                                                             {   /* Procedure */
                                                                                 if (!find($1, CAT_PROCEDURE)){
                                                                                     cout << MSG_BEGIN_ERROR << line_num << ": procedimento '"<< $1 <<"' não declarado.\n";
-                                                                                } else {
-                                                                                    checkProcedureParameters($1, t_type_params);
-                                                                                }   
+                                                                                }
                                                                             }
+          lista_arg                                                         {;}
         | BEG comandos END                                                  {;}
         | FOR IDENT ATTRIBUTION numero TO numero DO BEG comandos END        {;}
         ;
@@ -460,7 +459,7 @@ termo       : op_un fator mais_fatores                                          
 
 /* REGRA 28: <mais_fatores> ::= <op_mul> <fator> <mais_fatores> | λ */
 mais_fatores: op_mul fator mais_fatores                                         {
-                                                                                     if (is_division)
+                                                                                    if (is_division)
                                                                                     {
                                                                                         if (tmp2 == REAL_TYPE)
                                                                                         {
@@ -479,10 +478,6 @@ op_mul      : MULT                                                              
 
 /* REGRA 30: <fator> ::= ident | <numero> | ( <expressao> ) */
 fator       : IDENT                                                             {
-                                                                                    if (!find($1, CAT_VARIABLE)){
-                                                                                        cout << MSG_BEGIN_ERROR << line_num << ": variável '"<< $1 <<"' não declarada.\n";
-                                                                                    }
-
                                                                                     if (find($1, CAT_VARIABLE))
                                                                                     {
                                                                                         string tmp2 = getType($1, CAT_VARIABLE);
@@ -615,7 +610,7 @@ void yyerror(const char *str)
             expected += " também são opções validas )";
         }
 
-        printf("[Erro] Linha %d: Esperava-se encontrar %s porém encontrou-se '%s'\n", line_num, expected.c_str(), yylval.str); // qq coisa mudar yylval para yytext
+        printf("Linha %d: Esperava-se encontrar %s porém encontrou-se '%s'\n", line_num, expected.c_str(), yylval.str); // qq coisa mudar yylval para yytext
     }
     else
     {
@@ -736,10 +731,10 @@ bool updateType(vector<string> cadeia, string type, int scope) {
 
     if (it1 != symbolTableVector.end()) {
         for (int i = 0; i < cadeia.size(); i++) {
-            cout << " >> CADEIA: " << cadeia[i] << "\n";
+            if (DEBUG) cout << " >> CADEIA: " << cadeia[i] << "\n";
             it2 = it1->second.find(cadeia[i]);
             if (it2 != it1->second.end()){
-                printf("ATUALIZOU TIPO DE : %s   PARA : %s\n", cadeia[i].c_str(), type.c_str());
+                if (DEBUG) printf("ATUALIZOU TIPO DE : %s   PARA : %s\n", cadeia[i].c_str(), type.c_str());
                 it2->second.type = type;
             }
         }
@@ -781,7 +776,7 @@ string getType(string cadeia, string category) {
             }
         }
     }
-
+    
     // global scope
     it1 = symbolTableVector.find(0);
 
@@ -823,28 +818,7 @@ Element getElement(string cadeia){
 
 
 // Check if the number of parameters is right and the type of the parameters
-void checkProcedureParameters(string procName, vector<string> types) {
-    if(DEBUG) printProcParameters(procName);
-
-
-    unordered_map<string, vector<Element> >::iterator it;
-    it = procParams.find(procName);
-    if (it != procParams.end()){
-
-        // Check the number of parameters:
-        if (it->second.size() > types.size() || it->second.size() < types.size()) {
-            cout << MSG_BEGIN_ERROR << line_num << ": Esperava-se " << it->second.size() << " argumento(s), mas encontrou-se " << types.size() << " argumento(s)\n";
-            return;
-        }
-
-        // Check the type of the parameters:
-        for (int i = 0; i < it->second.size(); i++) { // For each param
-            if (it->second[i].type != types[i]){
-                cout << MSG_BEGIN_ERROR << line_num << ": Tipo inválido de argumento. Esperava-se tipo '" << it->second[i].type << "', mas o argumento " << i+1 << " é do tipo '" << types[i] << "'\n";
-            }
-            cout << "\tcadeia: " << it->second[i].cadeia << " , type: " << it->second[i].type << "\n";
-        }
-    }
+void checkProcedureParameters(string procName, string types) {
 
 }
 /*****************************************************************************************/
