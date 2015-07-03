@@ -468,6 +468,7 @@ mais_fatores: op_mul fator mais_fatores                                         
                                                                                         }
                                                                                         tmp2.clear();
                                                                                     }
+                                                                                    is_division = false;
                                                                                 }
             | /*vazio*/                                                         {;}
             ;

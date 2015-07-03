@@ -1,15 +1,16 @@
 program p5;
 var a,b,c : integer;
-var s: real;
+var s: rea;
+var s>real;
 procedure meu_proc(x: integer);
-begin
+begina
     x := 10;
 end;
 begin
     a := 10;
     b := 20;
     c := 30;
-    meu_proc(a);
+    meu_proc(a.s);
     meu_proc(a;b); {Mais parametros que o esperado}
-    meu_proc(s);
+    meu_proc(@s);
 end.
