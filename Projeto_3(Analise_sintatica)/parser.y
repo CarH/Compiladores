@@ -305,10 +305,7 @@ dc_p    : PROCEDURE IDENT                                                   {
                                                                                 is_procedure = false;
                                                                             }
 
-         dc_p                                                               {
-                                                                                int numParams = getNumberOfParams($2);
-                                                                                                                                                                
-                                                                            }
+         dc_p                                                               {;}
         | error parametros SEMICOLON corpo_p dc_p                           {;}
         | error SEMICOLON corpo_p dc_p                                      {;}
         | error dc_p                                                        {;}
@@ -458,7 +455,11 @@ op_mul      : MULT                                                              
             ;
 
 /* REGRA 30: <fator> ::= ident | <numero> | ( <expressao> ) */
-fator       : IDENT                                                             {;}
+fator       : IDENT                                                             {
+                                                                                    if (!find($1, CAT_VARIABLE)){
+                                                                                        cout << MSG_BEGIN_ERROR << line_num << ": variável '"<< $1 <<"' não declarada.\n";
+                                                                                    }
+                                                                                }
             | numero                                                            {;}
             | OPEN_PAR expressao CLOSE_PAR                                      {;}
             ;
@@ -795,7 +796,7 @@ void checkProcedureParameters(string procName, vector<string> types) {
         // Check the type of the parameters:
         for (int i = 0; i < it->second.size(); i++) { // For each param
             if (it->second[i].type != types[i]){
-                cout << MSG_BEGIN_ERROR << line_num << ": Tipo inválido de argumento. Esperava-se tipo " << it->second[i].type << ", mas o argumento " << i+1 << " é do tipo " << types[i] << "\n";
+                cout << MSG_BEGIN_ERROR << line_num << ": Tipo inválido de argumento. Esperava-se tipo '" << it->second[i].type << "', mas o argumento " << i+1 << " é do tipo '" << types[i] << "'\n";
             }
             cout << "\tcadeia: " << it->second[i].cadeia << " , type: " << it->second[i].type << "\n";
         }
