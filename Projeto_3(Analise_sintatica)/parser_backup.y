@@ -83,78 +83,79 @@ map<string, string> m;
 
 
 programa : PROGRAM IDENT SEMICOLON corpo ENDPOINT                           {;}
-        | error SEMICOLON corpo ENDPOINT                                    {;}
+        |  error IDENT SEMICOLON corpo ENDPOINT                             {;}
+        |  PROGRAM error SEMICOLON corpo ENDPOINT                           {;}
         ;
-
-
 corpo : dc BEG comandos END                                                 {;}
-        | dc error comandos END                                             {;}
+        | error END                                                         {;}
+        | dc BEG error END                                                  {;}
         ;
-
-
 dc : dc_c dc_v dc_p                                                         {;}
-        | error dc_v                                                        {;}
-        | error dc_c                                                        {;}
-        | error dc_p                                                        {;}
+        | error VAR                                                         {;}
+        | error PROCEDURE                                                   {;}
+        | error BEG                                                         {;}
         ;
-
-
 dc_c : CONST IDENT EQUAL numero SEMICOLON dc_c                              {;}
-        | error numero SEMICOLON dc_c                                       {;}
-        | error SEMICOLON dc_c                                              {;}
-        | error dc_c                                                        {;}
+        | CONST IDENT EQUAL error SEMICOLON                                 {;}
+        | CONST IDENT EQUAL error MULT                                      {;}
+        | CONST IDENT EQUAL error DIV                                       {;}
+        | CONST IDENT EQUAL error PLUS                                      {;}
+        | CONST IDENT EQUAL error MINUS                                     {;}
+        | CONST IDENT EQUAL error CLOSE_PAR                                 {;}
+        | CONST IDENT EQUAL error THEN                                      {;}
+        | CONST IDENT EQUAL error ELSE                                      {;}
+        | CONST IDENT EQUAL error EQUAL                                     {;}
+        | CONST IDENT EQUAL error DIF                                       {;}
+        | CONST IDENT EQUAL error GREATER_EQUAL                             {;}
+        | CONST IDENT EQUAL error LESSER_EQUAL                              {;}
+        | CONST IDENT EQUAL error GREATER                                   {;}
+        | CONST IDENT EQUAL error LESSER                                    {;}
         | /*vazio*/                                                         {;}
         ;
-
-
 dc_v : VAR variaveis COLON tipo_var SEMICOLON dc_v                          {;}
-        | error variaveis COLON tipo_var SEMICOLON dc_v                     {;}
-        | error SEMICOLON dc_v                                              {;}
-        | error dc_v                                                        {;}
+        | VAR error CLOSE_PAR                                               {;}
+        | VAR error COLON                                                   {;}
+        | VAR variaveis COLON error SEMICOLON                               {;}
+        | VAR variaveis COLON tipo_var SEMICOLON error VAR                  {;}
         | /*vazio*/                                                         {;}
         ;
-
-
 tipo_var : REAL                                                             {;}
         | INTEGER                                                           {;}
         ;
-
-
 variaveis : IDENT mais_var                                                  {;}
+        | IDENT error CLOSE_PAR                                             {;}
         ;
-
-
 mais_var : COMMA variaveis                                                  {;}
+        |  COMMA error CLOSE_PAR                                            {;}
         | /*vazio*/                                                         {;}
         ;
-
-
 dc_p : PROCEDURE IDENT parametros SEMICOLON corpo_p dc_p                    {;}
-        | error parametros SEMICOLON corpo_p dc_p                           {;}
-        | error SEMICOLON corpo_p dc_p                                      {;}
-        | error dc_p                                                        {;}
+        | PROCEDURE IDENT error SEMICOLON                                   {;}
+        | PROCEDURE IDENT parametros SEMICOLON error PROCEDURE              {;}
+        | PROCEDURE IDENT parametros SEMICOLON error BEG                    {;}
+        | PROCEDURE IDENT parametros SEMICOLON corpo_p error BEG            {;}
         | /*vazio*/                                                         {;}
         ;
-
 parametros : OPEN_PAR lista_par CLOSE_PAR                                   {;}
         | OPEN_PAR error CLOSE_PAR                                          {;}
         | /*vazio*/                                                         {;}
         ;
 lista_par : variaveis COLON tipo_var mais_par                               {;}
-        |   error tipo_var mais_par                                         {;}
-        |   error mais_par                                                  {;}
+        | error COLON tipo_var mais_par                                     {;}
+        | error CLOSE_PAR                                                   {;}
+        | variaveis COLON error SEMICOLON                                   {;}
+        | variaveis COLON tipo_var error CLOSE_PAR                          {;}
         ;
 mais_par : SEMICOLON lista_par                                              {;}
         | /*vazio*/                                                         {;}
         ;
 corpo_p : dc_loc BEG comandos END SEMICOLON                                 {;}
-        | error BEG comandos END SEMICOLON                                  {;}
-        | error SEMICOLON                                                   {;}
+        | dc_loc BEG error END                                              {;}
         ;
 dc_loc : dc_v                                                               {;}
         ;
 lista_arg : OPEN_PAR argumentos CLOSE_PAR                                   {;}
-        | OPEN_PAR error CLOSE_PAR                                          {;}
+        |  OPEN_PAR error CLOSE_PAR                                         {;}
         | /*vazio*/                                                         {;}
         ;
 argumentos : IDENT mais_ident                                               {;}
@@ -163,11 +164,12 @@ mais_ident : SEMICOLON argumentos                                           {;}
         | /*vazio*/                                                         {;}
         ;
 pfalsa : ELSE cmd                                                           {;}
-        | error cmd                                                         {;}
         | /*vazio*/                                                         {;}
         ;
 comandos : cmd SEMICOLON comandos                                           {;}
-        | error comandos                                                    {;}
+        |  error SEMICOLON comandos                                         {;}
+        |  error ELSE                                                       {;}
+        |  cmd SEMICOLON error END                                          {;}
         | /*vazio*/                                                         {;}
         ;
 cmd : READ OPEN_PAR variaveis CLOSE_PAR                                     {;}
@@ -246,10 +248,8 @@ int main(int argc, char const *argv[]){
     m["MINUS"] = "-";
     m["MULT"] = "*";
     m["DIV"] = "/";
-    m["INTEGER_NUMBER"] = "numero inteiro";
-    m["REAL_NUMBER"] = "numero real";
-    m["INTEGER"] = "integer";
-    m["REAL"] = "real";
+    m["INTEGER_NUMBER"] = "integer";
+    m["REAL_NUMBER"] = "real";
     m["PROGRAM"] = "program";
     m["BEG"] = "begin";
     m["END"] = "end";

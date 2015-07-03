@@ -50,47 +50,44 @@ extern int yydebug;
     SEMICOLON = 260,
     ENDPOINT = 261,
     ATTRIBUTION = 262,
-    CONST_IDENT = 263,
-    COLON = 264,
-    TYPE = 265,
-    COMMA = 266,
-    PROCEDURE_IDENT = 267,
-    OPEN_PAR = 268,
-    CLOSE_PAR = 269,
-    EQUAL = 270,
-    DIF = 271,
-    GREATER_EQUAL = 272,
-    LESSER_EQUAL = 273,
-    GREATER = 274,
-    LESSER = 275,
-    PLUS = 276,
-    MINUS = 277,
-    MULT = 278,
-    DIV = 279,
-    INTEGER_NUMBER = 280,
-    REAL_NUMBER = 281,
-    UNEXPECTED_CHAR = 282,
-    ERROINT = 283,
-    ERROIDENT = 284,
-    ERROFLOAT = 285,
-    ERROTAM = 286,
-    PROGRAM = 287,
-    BEG = 288,
-    END = 289,
-    IF = 290,
-    ELSE = 291,
-    CONST = 292,
-    VAR = 293,
-    PROCEDURE = 294,
-    REAL = 295,
-    INTEGER = 296,
-    READ = 297,
-    WRITE = 298,
-    WHILE = 299,
-    DO = 300,
-    THEN = 301,
-    FOR = 302,
-    TO = 303
+    COLON = 263,
+    COMMA = 264,
+    OPEN_PAR = 265,
+    CLOSE_PAR = 266,
+    EQUAL = 267,
+    DIF = 268,
+    GREATER_EQUAL = 269,
+    LESSER_EQUAL = 270,
+    GREATER = 271,
+    LESSER = 272,
+    PLUS = 273,
+    MINUS = 274,
+    MULT = 275,
+    DIV = 276,
+    INTEGER_NUMBER = 277,
+    REAL_NUMBER = 278,
+    UNEXPECTED_CHAR = 279,
+    ERROINT = 280,
+    ERROIDENT = 281,
+    ERROFLOAT = 282,
+    ERROTAM = 283,
+    PROGRAM = 284,
+    BEG = 285,
+    END = 286,
+    IF = 287,
+    ELSE = 288,
+    CONST = 289,
+    VAR = 290,
+    PROCEDURE = 291,
+    REAL = 292,
+    INTEGER = 293,
+    READ = 294,
+    WRITE = 295,
+    WHILE = 296,
+    DO = 297,
+    THEN = 298,
+    FOR = 299,
+    TO = 300
   };
 #endif
 
@@ -99,13 +96,13 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 26 "parser.y" /* yacc.c:1909  */
+#line 28 "parser.y" /* yacc.c:1909  */
 
     int numi;
     float numf;
     char *str;
 
-#line 109 "parser.tab.h" /* yacc.c:1909  */
+#line 106 "parser.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

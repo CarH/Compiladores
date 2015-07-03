@@ -1,6 +1,7 @@
 %{  
 #include "myscanner.h"
 #include "parser.tab.h"
+#include <string.h>
 #define YY_DECL extern "C" int yylex()
 using namespace std;
 extern void yyerror (const char *s);
@@ -45,7 +46,7 @@ yytokentype test(char *s)
     }
     if(!strcmp(s, "real"))
     {
-       return REAL;
+       return REAL ;
     }
     if(!strcmp(s, "integer"))
     {
@@ -114,30 +115,31 @@ yytokentype test(char *s)
 (\+)																						{yylval.str = strdup(yytext);return PLUS;}
 (\-)																						{yylval.str = strdup(yytext);return MINUS;}
 (\*)																						{yylval.str = strdup(yytext);return MULT;}
-(\/)																						{yylval.str = strdup(yytext);return DIV;}
+(\/)                                            {yylval.str = strdup(yytext);return DIV;}
+(=)																						  {yylval.str = strdup(yytext);return EQUAL;}
 \{.*\}																						;
 [\ \t]                																		;
 [\n]																						{++line_num;}
 [0-9][^\.\(\)\[\]\ \n\r\t;:,\+\-\*\/<>#]*   												{
-																								sprintf(str, "Linha %d: Inteiro mal formado (%s)", line_num, yytext);
+																								sprintf(str, "Linha %d: Encontrou-se %s que é considerado um inteiro mal formado", line_num, yytext);
 																								yyerror(str); 
                                                 yylval.str = strdup("skip");
 																								return ERROINT;
 																							};
 [0-9][^\.\(\)\[\]\ \n\r\t;:,\+\-\*\/<>#]*\.[^\.\(\)\[\]\ \n\r\t;:,\+\-\*\/<>#]*   			{
-																								sprintf(str, "Linha %d: Float mal formado (%s)",line_num, yytext);
+																								sprintf(str, "Linha %d: Encontrou-se %s que é considerado um float mal formado", line_num, yytext);
 																								yyerror(str);
                                                 yylval.str = strdup("skip");
 																								return ERROFLOAT;
 																							};
 [A-Za-z][^\.\(\)\[\]\ \n\r\t;:,\+\-\*\/<>#]*   												{
-																								sprintf(str, "Linha %d: Identificador mal formado (%s)",line_num, yytext);
+																								sprintf(str, "Linha %d: Encontrou-se %s que é considerado um identificador mal formado", line_num, yytext);
 																								yyerror(str);
                                                 yylval.str = strdup("skip");
 																								return ERROIDENT;
 																							};
 .                       																	{
-																								sprintf(str, "Linha %d: Caracter desconhecido (%s)",line_num, yytext);
+																								sprintf(str, "Linha %d: Encontrou-se %s que é considerado como um caracter desconhecido",line_num, yytext);
 																								yyerror(str);
                                                 yylval.str = strdup("skip");
 																								return UNEXPECTED_CHAR;
