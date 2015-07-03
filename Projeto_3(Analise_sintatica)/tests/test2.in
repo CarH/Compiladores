@@ -1,17 +1,14 @@
-program nome1;
-{exemplo 1}
+program p5;
+const cte = 90;
+var b,c : integer;
+procedure meu_proc(x: integer);
 begin
-read(a);
-a1:= a1*2;
-while (a1>0) do
-begin
-write(a1);
-a1:= a1-1;
+    x := 10;
 end;
-for b:=1 to 10 do
 begin
-b:=b+2;
-a:=a-1;
-end;
-if a<> b then write(a);
+    a := 10;
+    b := 20;
+    c := 30;
+    meu_proc(a);
+    meu_proc(a;b); {Mais parametros que o esperado}
 end.

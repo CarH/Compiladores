@@ -6,4 +6,4 @@ compile:
 	g++ parser.tab.c lex.yy.c -std=c++11 -lfl -o parser 
 
 run:
-	./parser < tests/test0.in
+	./parser < tests/test2.in

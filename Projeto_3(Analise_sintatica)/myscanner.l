@@ -2,6 +2,7 @@
 #include "myscanner.h"
 #include <string.h>
 #include "parser.tab.h"
+#include <string.h>
 #define YY_DECL extern "C" int yylex()
 using namespace std;
 extern void yyerror (const char *s);
@@ -47,7 +48,7 @@ yytokentype test(char *s)
     }
     if(!strcmp(s, "real"))
     {
-       return REAL;
+       return REAL ;
     }
     if(!strcmp(s, "integer"))
     {
@@ -97,48 +98,49 @@ yytokentype test(char *s)
 %}
 %%
 
-[a-zA-Z][_a-zA-Z0-9]*   																	return {test(yytext)};
-[0-9]+(\.)[0-9]+   	 																		{yylval.str = strdup(yytext);return REAL_NUMBER;}
-(0|[1-9][0-9]*)            															{yylval.str = strdup(yytext);		return INTEGER_NUMBER;}
+[a-zA-Z][_a-zA-Z0-9]*   												return {test(yytext)};
+[0-9]+(\.)[0-9]+   	 														{yylval.str = strdup(yytext); return REAL_NUMBER;}
+(0|[1-9][0-9]*)            											{yylval.str = strdup(yytext);	return INTEGER_NUMBER;}
 (:=)																						{yylval.str = strdup(yytext); return ATTRIBUTION;}
 (<>)																						{yylval.str = strdup(yytext); return DIF;}
 (>=)																						{yylval.str = strdup(yytext); return GREATER_EQUAL;}
-(<=)																						{yylval.str = strdup(yytext);return LESSER_EQUAL;}
-(>)																							{yylval.str = strdup(yytext);return GREATER;}
-(<)																							{yylval.str = strdup(yytext);return LESSER;}
+(<=)																						{yylval.str = strdup(yytext); return LESSER_EQUAL;}
+(>)																							{yylval.str = strdup(yytext); return GREATER;}
+(<)																							{yylval.str = strdup(yytext); return LESSER;}
 (\;)																						{yylval.str = strdup(yytext); return SEMICOLON;}
-(\.)																						{yylval.str = strdup(yytext);return ENDPOINT;}
-(:)																							{yylval.str = strdup(yytext);return COLON;}
-(,)																							{yylval.str = strdup(yytext);return COMMA;}
-(\()																						{yylval.str = strdup(yytext);return OPEN_PAR; }
-(\))																						{yylval.str = strdup(yytext);return CLOSE_PAR;}
-(\+)																						{yylval.str = strdup(yytext);return PLUS;}
-(\-)																						{yylval.str = strdup(yytext);return MINUS;}
-(\*)																						{yylval.str = strdup(yytext);return MULT;}
-(\/)																						{yylval.str = strdup(yytext);return DIV;}
+(\.)																						{yylval.str = strdup(yytext); return ENDPOINT;}
+(:)																							{yylval.str = strdup(yytext); return COLON;}
+(,)																							{yylval.str = strdup(yytext); return COMMA;}
+(\()																						{yylval.str = strdup(yytext); return OPEN_PAR; }
+(\))																						{yylval.str = strdup(yytext); return CLOSE_PAR;}
+(\+)																						{yylval.str = strdup(yytext); return PLUS;}
+(\-)																						{yylval.str = strdup(yytext); return MINUS;}
+(\*)																						{yylval.str = strdup(yytext); return MULT;}
+(\/)                                            {yylval.str = strdup(yytext); return DIV;}
+(=)																						  {yylval.str = strdup(yytext); return EQUAL;}
 \{.*\}																						;
 [\ \t]                																		;
 [\n]																						{++line_num;}
 [0-9][^\.\(\)\[\]\ \n\r\t;:,\+\-\*\/<>#]*   												{
-																								sprintf(str, "Linha %d: Inteiro mal formado (%s)", line_num, yytext);
+																								sprintf(str, "Linha %d: Encontrou-se %s que é considerado um inteiro mal formado", line_num, yytext);
 																								yyerror(str); 
                                                 yylval.str = strdup("skip");
 																								return ERROINT;
 																							};
 [0-9][^\.\(\)\[\]\ \n\r\t;:,\+\-\*\/<>#]*\.[^\.\(\)\[\]\ \n\r\t;:,\+\-\*\/<>#]*   			{
-																								sprintf(str, "Linha %d: Float mal formado (%s)",line_num, yytext);
+																								sprintf(str, "Linha %d: Encontrou-se %s que é considerado um float mal formado", line_num, yytext);
 																								yyerror(str);
                                                 yylval.str = strdup("skip");
 																								return ERROFLOAT;
 																							};
 [A-Za-z][^\.\(\)\[\]\ \n\r\t;:,\+\-\*\/<>#]*   												{
-																								sprintf(str, "Linha %d: Identificador mal formado (%s)",line_num, yytext);
+																								sprintf(str, "Linha %d: Encontrou-se %s que é considerado um identificador mal formado", line_num, yytext);
 																								yyerror(str);
                                                 yylval.str = strdup("skip");
 																								return ERROIDENT;
 																							};
 .                       																	{
-																								sprintf(str, "Linha %d: Caracter desconhecido (%s)",line_num, yytext);
+																								sprintf(str, "Linha %d: Encontrou-se %s que é considerado como um caracter desconhecido",line_num, yytext);
 																								yyerror(str);
                                                 yylval.str = strdup("skip");
 																								return UNEXPECTED_CHAR;
