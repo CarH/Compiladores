@@ -12,4 +12,7 @@ begin
     b := b + a;
     a := b + a; { atribuicao de real a inteiro }
     
+    a := a/b;
+    a := b/a;
+
 end.

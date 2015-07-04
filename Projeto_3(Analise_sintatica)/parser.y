@@ -1,3 +1,13 @@
+/***************************************************************************************************
+ *                                  Trabalho 3 - Analisador Semântico
+ *                      SCC0217 Linguagens de programação e compiladores       
+ *                                 Prof. Dr. Diego Raphael Amancio
+ ***************************************************************************************************
+ *      Grupo:
+ *          Bruno Daniel Sanches Silva              
+ *          Carlos Humberto S Baqueta       
+ *          Cláudio Domene                  
+ ***************************************************************************************************/
 %{
 #include <stdio.h>     
 #include <stdlib.h>
@@ -53,7 +63,6 @@ void insert(string cadeia, int token, string type, string cat, string val, int l
 bool find(int scope, string cadeia);
 bool updateType(vector<string> cadeia, string type, int scope);
 void printSymbolTable();
-int getNumberOfParams(string procName);
 void printProcParameters(string procName);
 bool find(string cadeia, string category);
 string getType(string cadeia, string category);
@@ -82,18 +91,23 @@ string t_num;
 string t_type;
 vector<string> t_type_params;
 vector<string> t_cadeias;
+string t_var_type;
 
 /****************************************
 |       Parameters of the Procedures    |
 ****************************************/
 unordered_map<string, vector<Element> > procParams;
 string curr_proc_name;
-bool is_proc_parameter = false;
+
+/****************************************
+|           Control Flags               |
+****************************************/
+bool is_proc_parameter  = false;
 bool is_valid_procedure = false;
-bool is_procedure = false;
-bool is_division = false;
-
-
+bool is_procedure       = false;
+bool is_division        = false;
+bool check_var_type     = false;
+bool has_diff_type      = false;
 
 string MSG_BEGIN_ERROR = "[Erro] Linha ";
 /*****************************************************************************************/
@@ -216,7 +230,7 @@ tipo_var : REAL                                                             {
                                                                                         } else {
                                                                                             insert(t_cadeias[i], IDENT, t_type, CAT_VARIABLE, NONE, line_num, CURR_SCOPE, 0);
                                                                                         }
-                                                                                        // insert procedure parameter intro procParams
+                                                                                        // insert procedure parameter into the procParams
                                                                                         if (is_proc_parameter && is_valid_procedure){
                                                                                             Element elem;
                                                                                             elem.cadeia = t_cadeias[i];
@@ -229,6 +243,7 @@ tipo_var : REAL                                                             {
                                                                                     }
                                                                                 }
                                                                                 t_cadeias.clear();
+                                                                            
                                                                             }
         | INTEGER                                                           {
                                                                                 t_type = INT_TYPE;
@@ -243,6 +258,7 @@ tipo_var : REAL                                                             {
                                                                                         } else {
                                                                                             insert(t_cadeias[i], IDENT, t_type, CAT_VARIABLE, NONE, line_num, CURR_SCOPE, 0);
                                                                                         }
+                                                                                        // insert procedure parameter into the procParams
                                                                                         if (is_proc_parameter && is_valid_procedure){
                                                                                             Element elem;
                                                                                             elem.cadeia = t_cadeias[i];
@@ -260,7 +276,22 @@ tipo_var : REAL                                                             {
         ;
 
 /* REGRA 7: <variaveis> ::= ident <mais_var> */
-variaveis: IDENT mais_var                                                   {
+variaveis: IDENT                                                            {
+                                                                                if(check_var_type){ /* The variable is already declared */
+                                                                                    if(find($1, CAT_VARIABLE)){
+                                                                                        if (t_var_type == NONE){
+                                                                                            t_var_type = getType($1, CAT_VARIABLE);
+                                                                                        } else {
+                                                                                            if (t_var_type != getType($1, CAT_VARIABLE)){
+                                                                                                has_diff_type = true;
+                                                                                            }
+                                                                                        }
+                                                                                    } else {
+                                                                                        cout << MSG_BEGIN_ERROR << line_num << ": variável '"<< $1 <<"' não declarada ou '"<< $1 <<"' não é do tipo variável.\n";                                 
+                                                                                    }
+                                                                                }
+                                                                            }
+            mais_var                                                        {
                                                                                 if(DEBUG) cout << "inseriu " << $1 << " em t_cadeias\n";
                                                                                 t_cadeias.push_back($1);
                                                                             }
@@ -355,6 +386,7 @@ lista_arg : OPEN_PAR                                                        {
 
 /* REGRA 16: <argumentos> ::= ident <mais_ident> */
 argumentos : IDENT                                                          {
+                                                                                if (DEBUG) printSymbolTable();
                                                                                 if(find($1, CAT_VARIABLE)){
                                                                                     t_type_params.push_back(getType($1, CAT_VARIABLE)); // TODO
                                                                                 } else {
@@ -388,13 +420,37 @@ comandos : cmd SEMICOLON comandos                                           {;}
     | ident := <expressão> 
     | ident <lista_arg> 
     | begin <comandos> end        */
-cmd     : READ OPEN_PAR variaveis CLOSE_PAR                                 {;}
-        | WRITE OPEN_PAR variaveis CLOSE_PAR                                {;}
+cmd     : READ OPEN_PAR                                                     { 
+                                                                                t_var_type = NONE;
+                                                                                check_var_type = true;
+                                                                                has_diff_type  = false; 
+                                                                            } 
+          variaveis CLOSE_PAR                                               {
+                                                                                if (has_diff_type){
+                                                                                    cout << MSG_BEGIN_ERROR << line_num << ": comando 'read' apresenta variáveis de tipos diferentes.\n";
+                                                                                }
+                                                                                check_var_type = false;
+                                                                                has_diff_type  = false; 
+                                                                                t_var_type = NONE;
+                                                                            }
+        | WRITE OPEN_PAR                                                    {
+                                                                                t_var_type = NONE;
+                                                                                check_var_type = true;
+                                                                                has_diff_type  = false; 
+                                                                            }
+          variaveis CLOSE_PAR                                               {
+                                                                                if (has_diff_type){
+                                                                                    cout << MSG_BEGIN_ERROR << line_num << ": comando 'write' apresenta variáveis de tipos diferentes.\n";
+                                                                                }
+                                                                                check_var_type = false;
+                                                                                has_diff_type  = false; 
+                                                                                t_var_type = NONE;
+                                                                            }
         | WHILE OPEN_PAR condicao CLOSE_PAR DO cmd                          {;}
         | IF condicao THEN cmd pfalsa                                       {;}
         | IDENT ATTRIBUTION                                                 {
                                                                                 if (!find($1, CAT_VARIABLE)){
-                                                                                    cout << MSG_BEGIN_ERROR << line_num << ": variável '"<< $1 <<"' não declarada.\n";
+                                                                                    cout << MSG_BEGIN_ERROR << line_num << ": variável '"<< $1 <<"' não declarada ou fora do escopo.\n";
                                                                                 }
                                                                             } 
           expressao                                                         {
@@ -464,7 +520,7 @@ mais_fatores: op_mul fator mais_fatores                                     {
                                                                                 {
                                                                                     if (tmp2 == REAL_TYPE)
                                                                                     {
-                                                                                        cout << MSG_BEGIN_ERROR << line_num << ": Número real encontrado em uma divisão, só se pode dividir números inteiros.\n";
+                                                                                        cout << MSG_BEGIN_ERROR << line_num << ": Divisão não é entre números inteiros, só é permitida a divisão entre números inteiros.\n";
                                                                                     }
                                                                                     tmp2.clear();
                                                                                     is_division = false;
@@ -724,7 +780,6 @@ bool find(string cadeia, string category) {
         }
     }
 
-
     return false;
 }
 
@@ -746,14 +801,6 @@ bool updateType(vector<string> cadeia, string type, int scope) {
         return true;
     }
     return false;
-}
-
-int getNumberOfParams(string procName) {
-    unordered_map<string, vector<Element> >::iterator it;
-    it = procParams.find(procName);
-    if (it != procParams.end())
-        return it->second.size();
-    return 0;
 }
 
 void printProcParameters(string procName) {
@@ -820,6 +867,5 @@ void checkProcedureParameters(string procName, vector<string> types) {
             if (DEBUG) cout << "\tcadeia: " << it->second[i].cadeia << " , type: " << it->second[i].type << "\n";
         }
     }
-
 }
 /*****************************************************************************************/

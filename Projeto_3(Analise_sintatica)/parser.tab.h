@@ -96,7 +96,7 @@ extern int yydebug;
 typedef union YYSTYPE YYSTYPE;
 union YYSTYPE
 {
-#line 108 "parser.y" /* yacc.c:1909  */
+#line 112 "parser.y" /* yacc.c:1909  */
 
     int numi;
     float numf;
