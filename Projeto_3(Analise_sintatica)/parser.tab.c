@@ -599,8 +599,8 @@ static const yytype_uint16 yyrline[] =
      353,   357,   357,   368,   369,   373,   374,   375,   379,   380,
      381,   391,   392,   393,   394,   395,   395,   411,   419,   420,
      424,   428,   429,   430,   431,   432,   433,   434,   438,   442,
-     443,   444,   448,   449,   453,   454,   458,   462,   472,   476,
-     477,   481,   500,   501,   505,   516
+     443,   444,   448,   449,   453,   454,   458,   462,   473,   477,
+     478,   482,   501,   502,   506,   517
 };
 #endif
 
@@ -2251,31 +2251,32 @@ yyreduce:
                                                                                         cout << MSG_BEGIN_ERROR << line_num << ": Número real encontrado em uma divisão, só se pode dividir números inteiros.\n";
                                                                                     }
                                                                                     tmp2.clear();
+                                                                                    is_division = false;
                                                                                 }
                                                                             }
-#line 2257 "parser.tab.c" /* yacc.c:1646  */
+#line 2258 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 88:
-#line 472 "parser.y" /* yacc.c:1646  */
+#line 473 "parser.y" /* yacc.c:1646  */
     {;}
-#line 2263 "parser.tab.c" /* yacc.c:1646  */
+#line 2264 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 89:
-#line 476 "parser.y" /* yacc.c:1646  */
+#line 477 "parser.y" /* yacc.c:1646  */
     {;}
-#line 2269 "parser.tab.c" /* yacc.c:1646  */
+#line 2270 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 90:
-#line 477 "parser.y" /* yacc.c:1646  */
+#line 478 "parser.y" /* yacc.c:1646  */
     {is_division = true;}
-#line 2275 "parser.tab.c" /* yacc.c:1646  */
+#line 2276 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 91:
-#line 481 "parser.y" /* yacc.c:1646  */
+#line 482 "parser.y" /* yacc.c:1646  */
     {
                                                                                 if (!find((yyvsp[0].str), CAT_VARIABLE)){
                                                                                     cout << MSG_BEGIN_ERROR << line_num << ": variável '"<< (yyvsp[0].str) <<"' não declarada.\n";
@@ -2295,23 +2296,23 @@ yyreduce:
                                                                                 }
                                                                                 tmp2 = tmp;
                                                                             }
-#line 2299 "parser.tab.c" /* yacc.c:1646  */
+#line 2300 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 92:
-#line 500 "parser.y" /* yacc.c:1646  */
+#line 501 "parser.y" /* yacc.c:1646  */
     {;}
-#line 2305 "parser.tab.c" /* yacc.c:1646  */
+#line 2306 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 93:
-#line 501 "parser.y" /* yacc.c:1646  */
+#line 502 "parser.y" /* yacc.c:1646  */
     {;}
-#line 2311 "parser.tab.c" /* yacc.c:1646  */
+#line 2312 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 94:
-#line 505 "parser.y" /* yacc.c:1646  */
+#line 506 "parser.y" /* yacc.c:1646  */
     {
                                                                                 // printf("val: %s, text: %s\n", yylval, yytext);
                                                                                 t_num = yylval.str;
@@ -2323,22 +2324,22 @@ yyreduce:
                                                                                 }
 
                                                                             }
-#line 2327 "parser.tab.c" /* yacc.c:1646  */
+#line 2328 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 95:
-#line 516 "parser.y" /* yacc.c:1646  */
+#line 517 "parser.y" /* yacc.c:1646  */
     {
                                                                                 tmp = INT_TYPE;
                                                                                 tmp2 = tmp;
                                                                                 t_num = yylval.str;
                                                                                 t_type = REAL_TYPE;
                                                                             }
-#line 2338 "parser.tab.c" /* yacc.c:1646  */
+#line 2339 "parser.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 2342 "parser.tab.c" /* yacc.c:1646  */
+#line 2343 "parser.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -2573,7 +2574,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 523 "parser.y" /* yacc.c:1906  */
+#line 524 "parser.y" /* yacc.c:1906  */
 
 
 /**/

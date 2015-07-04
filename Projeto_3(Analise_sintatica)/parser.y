@@ -467,6 +467,7 @@ mais_fatores: op_mul fator mais_fatores                                     {
                                                                                         cout << MSG_BEGIN_ERROR << line_num << ": Número real encontrado em uma divisão, só se pode dividir números inteiros.\n";
                                                                                     }
                                                                                     tmp2.clear();
+                                                                                    is_division = false;
                                                                                 }
                                                                             }
             | /*vazio*/                                                     {;}
