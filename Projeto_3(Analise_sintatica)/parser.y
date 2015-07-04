@@ -55,7 +55,6 @@ bool updateType(vector<string> cadeia, string type, int scope);
 void printSymbolTable();
 int getNumberOfParams(string procName);
 void printProcParameters(string procName);
-Element getElement(string cadeia);
 bool find(string cadeia, string category);
 string getType(string cadeia, string category);
 void checkProcedureParameters(string procName, vector<string> types);
@@ -165,7 +164,7 @@ map<string, string> m;
 /* REGRA 1: <programa> ::= program ident ; <corpo> . */
 programa: PROGRAM IDENT                                                     {
                                                                                 insert($2, IDENT, NONE, CAT_PROGRAM_NAME, NONE, line_num, CURR_SCOPE, 0);                                                                                
-                                                                                printSymbolTable();
+                                                                                if (DEBUG) printSymbolTable();
                                                                             }
           SEMICOLON corpo ENDPOINT                                          {;}
 
@@ -186,9 +185,8 @@ dc      : dc_c dc_v dc_p                                                    {;}
 
 /* REGRA 4: <dc_c> ::= const ident = <numero> ; <dc_c> | λ */
 dc_c    : CONST IDENT EQUAL numero SEMICOLON dc_c                           {
-                                                                               // printf("numero: %s\n", $4);
                                                                                 insert($2, IDENT, t_type, CAT_CONSTANT, t_num, line_num, CURR_SCOPE, 0);
-                                                                                printSymbolTable();
+                                                                                if (DEBUG) printSymbolTable();
                                                                             }
         | error numero SEMICOLON dc_c                                       {;}
         | error SEMICOLON dc_c                                              {;}
@@ -252,7 +250,7 @@ tipo_var : REAL                                                             {
                                                                                             unordered_map<string, vector<Element> >::iterator it;
                                                                                             it = procParams.find(curr_proc_name);
                                                                                             it->second.push_back(elem);
-                                                                                            cout << " >> Inseriu " << t_cadeias[i] << " SCOPE: " << CURR_SCOPE << "\n";
+                                                                                            if (DEBUG) cout << " >> Inseriu " << t_cadeias[i] << " SCOPE: " << CURR_SCOPE << "\n";
 
                                                                                         }
                                                                                     }
@@ -296,15 +294,17 @@ dc_p    : PROCEDURE IDENT                                                   {
                                                                             } 
          parametros                                                         {
                                                                                 is_proc_parameter = false;
-                                                                                printProcParameters(curr_proc_name);
+                                                                                if (DEBUG) printProcParameters(curr_proc_name);
                                                                             }
 
          SEMICOLON corpo_p                                                  {
-                                                                                // TODO delete the symbolTable from the CURR_SCOPE
-                                                                                printSymbolTable();
-                                                                                if(DEBUG) cout << " ! REMOVING SCOPE " << CURR_SCOPE << "\n";
+                                                                                if (DEBUG) printSymbolTable();
+                                                                                if (DEBUG) cout << " ! REMOVING SCOPE " << CURR_SCOPE << "\n";
+                                                                                
+                                                                                // Delete the symbol Table from the CURR_SCOPE
                                                                                 symbolTableVector.erase(CURR_SCOPE);
-                                                                                printSymbolTable();
+
+                                                                                if (DEBUG) printSymbolTable();
                                                                                 CURR_SCOPE--;
                                                                                 is_procedure = false;
                                                                             }
@@ -324,7 +324,7 @@ parametros : OPEN_PAR                                                       { t_
         ;
 
 /* REGRA 11: <lista_par> ::= <variaveis> : <tipo_var> <mais_par> */
-lista_par : variaveis COLON tipo_var mais_par                               {; }
+lista_par : variaveis COLON tipo_var mais_par                               {;}
         |   error tipo_var mais_par                                         {;}
         |   error mais_par                                                  {;}
         ;
@@ -421,7 +421,7 @@ cmd     : READ OPEN_PAR variaveis CLOSE_PAR                                 {;}
         ;
 
 /* REGRA 21: <condicao> ::= <expressao> <relacao> <expressao> */
-condicao: expressao relacao expressao                                      {;}
+condicao: expressao relacao expressao                                       {;}
         ;
 
 /* REGRA 22: <relacao> ::= = | <> | >= | <= | > | < */
@@ -435,70 +435,70 @@ relacao : EQUAL                                                             {;}
         ;
 
 /* REGRA 23: <expressao> ::= <termo> <outros_termos> */
-expressao   : termo outros_termos                                               {;}
+expressao   : termo outros_termos                                           {;}
             ;
 
 /* REGRA 24: <op_un> ::= + | - | λ */
-op_un   : PLUS                                                                  {;}
-        | MINUS                                                                 {;}
-        | /*vazio*/                                                             {;}
+op_un   : PLUS                                                              {;}
+        | MINUS                                                             {;}
+        | /*vazio*/                                                         {;}
         ;
 
 /* REGRA 25: <outros_termos> ::= <op_ad> <termo> <outros_termos> | λ */
-outros_termos: op_ad termo outros_termos                                        {;}
-            | /*vazio*/                                                         {;}
+outros_termos: op_ad termo outros_termos                                    {;}
+            | /*vazio*/                                                     {;}
             ;
 
 /* REGRA 26: <op_ad> ::= + | - */
-op_ad       : PLUS                                                              {;}
-            | MINUS                                                             {;}
+op_ad       : PLUS                                                          {;}
+            | MINUS                                                         {;}
             ;
 
 /* REGRA 27: <termo> ::= <op_un> <fator> <mais_fatores> */
-termo       : op_un fator mais_fatores                                          {;}
+termo       : op_un fator mais_fatores                                      {;}
             ;
 
 /* REGRA 28: <mais_fatores> ::= <op_mul> <fator> <mais_fatores> | λ */
-mais_fatores: op_mul fator mais_fatores                                         {
-                                                                                     if (is_division)
+mais_fatores: op_mul fator mais_fatores                                     {
+                                                                                 if (is_division)
+                                                                                {
+                                                                                    if (tmp2 == REAL_TYPE)
                                                                                     {
-                                                                                        if (tmp2 == REAL_TYPE)
-                                                                                        {
-                                                                                            cout << MSG_BEGIN_ERROR << line_num << ": Número real encontrado em uma divisão, só se pode dividir números inteiros.\n";
-                                                                                        }
-                                                                                        tmp2.clear();
+                                                                                        cout << MSG_BEGIN_ERROR << line_num << ": Número real encontrado em uma divisão, só se pode dividir números inteiros.\n";
                                                                                     }
+                                                                                    tmp2.clear();
                                                                                 }
-            | /*vazio*/                                                         {;}
+                                                                            }
+            | /*vazio*/                                                     {;}
             ;
 
 /* REGRA 29: <op_mul> ::= * | / */
-op_mul      : MULT                                                              {;}
-            | DIV                                                               {is_division = true;}
+op_mul      : MULT                                                          {;}
+            | DIV                                                           {is_division = true;}
             ;
 
 /* REGRA 30: <fator> ::= ident | <numero> | ( <expressao> ) */
-fator       : IDENT                                                             {
-                                                                                    if (!find($1, CAT_VARIABLE)){
-                                                                                        cout << MSG_BEGIN_ERROR << line_num << ": variável '"<< $1 <<"' não declarada.\n";
-                                                                                    }
-
-                                                                                    if (find($1, CAT_VARIABLE))
-                                                                                    {
-                                                                                        string tmp2 = getType($1, CAT_VARIABLE);
-                                                                                        if (tmp != REAL_TYPE)
-                                                                                            tmp = tmp2;
-                                                                                    }
-                                                                                    if (find($1, CAT_CONSTANT))
-                                                                                    {
-                                                                                        string tmp2 = getType($1, CAT_CONSTANT);
-                                                                                          if (tmp != REAL_TYPE)
-                                                                                            tmp = tmp2;
-                                                                                    }
-                                                                                    tmp2 = tmp;
+fator       : IDENT                                                         {
+                                                                                if (!find($1, CAT_VARIABLE)){
+                                                                                    cout << MSG_BEGIN_ERROR << line_num << ": variável '"<< $1 <<"' não declarada.\n";
                                                                                 }
-            | numero                                                            {;}
-            | OPEN_PAR expressao CLOSE_PAR                                      {;}
+
+                                                                                if (find($1, CAT_VARIABLE))
+                                                                                {
+                                                                                    string tmp2 = getType($1, CAT_VARIABLE);
+                                                                                    if (tmp != REAL_TYPE)
+                                                                                        tmp = tmp2;
+                                                                                }
+                                                                                if (find($1, CAT_CONSTANT))
+                                                                                {
+                                                                                    string tmp2 = getType($1, CAT_CONSTANT);
+                                                                                      if (tmp != REAL_TYPE)
+                                                                                        tmp = tmp2;
+                                                                                }
+                                                                                tmp2 = tmp;
+                                                                            }
+            | numero                                                        {;}
+            | OPEN_PAR expressao CLOSE_PAR                                  {;}
             ;
 
 /* REGRA 31: <numero> ::= numero_int | numero_real */
@@ -520,7 +520,6 @@ numero      : INTEGER_NUMBER                                                {
                                                                                 t_type = REAL_TYPE;
                                                                             }
             ;
-
 %%
 
 /**/
@@ -796,31 +795,6 @@ string getType(string cadeia, string category) {
     return NULL;
 }
 
-// Search into the current scope and in the global scope (0)
-Element getElement(string cadeia){
-    unordered_map<int, unordered_map<string, Element> >::iterator it1;
-    unordered_map<string, Element>::iterator it2;
-
-    it1 = symbolTableVector.find(CURR_SCOPE);
-    if (it1 != symbolTableVector.end()){
-        it2 = it1->second.find(cadeia);
-        if(it2 != it1->second.end()){
-            return it2->second;
-        } else {
-            // seach in the global scope:
-            it1 = symbolTableVector.find(0);
-            if (it1 != symbolTableVector.end()){
-                it2 = it1->second.find(cadeia);
-                if (it2 != it1->second.end()){
-                    return it2->second;
-                }
-            }
-        }
-
-    }
-    // return NULL;
-}
-
 
 // Check if the number of parameters is right and the type of the parameters
 void checkProcedureParameters(string procName, vector<string> types) {
@@ -840,9 +814,9 @@ void checkProcedureParameters(string procName, vector<string> types) {
         // Check the type of the parameters:
         for (int i = 0; i < it->second.size(); i++) { // For each param
             if (it->second[i].type != types[i]){
-                cout << MSG_BEGIN_ERROR << line_num << ": Tipo inválido de argumento. Esperava-se tipo '" << it->second[i].type << "', mas o argumento " << i+1 << " é do tipo '" << types[i] << "'\n";
+                cout << MSG_BEGIN_ERROR << line_num << ": Tipo incompatível de argumento. Esperava-se tipo '" << it->second[i].type << "', mas o argumento " << i+1 << " é do tipo '" << types[i] << "'\n";
             }
-            cout << "\tcadeia: " << it->second[i].cadeia << " , type: " << it->second[i].type << "\n";
+            if (DEBUG) cout << "\tcadeia: " << it->second[i].cadeia << " , type: " << it->second[i].type << "\n";
         }
     }
 
