@@ -633,21 +633,30 @@ void yyerror(const char *str)
         yylval.str = strdup("");
         return;
     }
-    string tmp = str;
-    if (tmp.find("syntax error") != string::npos)
+    string strS = str;
+    bool hasExpecting = true;
+    if (strS.find("syntax error") != string::npos)
     {
-        string strS = str;
         int pos = strS.find("expecting");
-        pos += 10;
+        if (pos == string::npos)
+        {
+            hasExpecting = false;
+            pos = strS.find("unexpected");
+            pos += 11;
+        }
+        else
+        {
+            pos += 10;
+        }
         string expected;
-        bool test = false;
+        bool moreThanOneWord = false;
         string word;
         while (pos < strS.size())
         {
 
-            if (expected.size() && !test)
+            if (expected.size() && !moreThanOneWord)
             {
-                test = true;
+                moreThanOneWord = true;
                 expected += " (Note que ";
             }
             else if (expected.size())
@@ -666,12 +675,14 @@ void yyerror(const char *str)
             pos += 4;
         }
 
-        if (test)
+        if (moreThanOneWord)
         {
             expected += " também são opções validas )";
         }
-
-        printf("[Erro] Linha %d: Esperava-se encontrar %s porém encontrou-se '%s'\n", line_num, expected.c_str(), yylval.str); // qq coisa mudar yylval para yytext
+        if (hasExpecting)
+            printf("[Erro] Linha %d: Esperava-se encontrar %s porém encontrou-se '%s'\n", line_num, expected.c_str(), yylval.str); // qq coisa mudar yylval para yytext
+        else
+            printf("[Erro] Linha %d: %s inesperado\n", line_num, expected.c_str());
     }
     else
     {

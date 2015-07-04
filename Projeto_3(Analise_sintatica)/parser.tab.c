@@ -62,7 +62,7 @@
 
 
 /* Copy the first part of user declarations.  */
-#line 1 "parser.y" /* yacc.c:339  */
+#line 11 "parser.y" /* yacc.c:339  */
 
 #include <stdio.h>     
 #include <stdlib.h>
@@ -256,7 +256,7 @@ extern int yydebug;
 typedef union YYSTYPE YYSTYPE;
 union YYSTYPE
 {
-#line 112 "parser.y" /* yacc.c:355  */
+#line 122 "parser.y" /* yacc.c:355  */
 
     int numi;
     float numf;
@@ -595,16 +595,16 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,   169,   169,   169,   175,   179,   180,   184,   185,   186,
-     187,   191,   195,   196,   197,   198,   202,   203,   204,   205,
-     206,   210,   238,   269,   269,   291,   292,   296,   316,   321,
-     296,   334,   335,   336,   337,   341,   341,   343,   344,   348,
-     349,   350,   354,   355,   359,   360,   361,   365,   369,   369,
-     373,   374,   378,   378,   390,   391,   395,   396,   397,   401,
-     402,   403,   413,   413,   426,   426,   439,   440,   441,   441,
-     457,   465,   466,   470,   474,   475,   476,   477,   478,   479,
-     480,   484,   488,   489,   490,   494,   495,   499,   500,   504,
-     508,   519,   523,   524,   528,   547,   548,   552,   563
+       0,   179,   179,   179,   185,   189,   190,   194,   195,   196,
+     197,   201,   205,   206,   207,   208,   212,   213,   214,   215,
+     216,   220,   248,   279,   279,   301,   302,   306,   326,   331,
+     306,   344,   345,   346,   347,   351,   351,   353,   354,   358,
+     359,   360,   364,   365,   369,   370,   371,   375,   379,   379,
+     383,   384,   388,   388,   400,   401,   405,   406,   407,   411,
+     412,   413,   423,   423,   436,   436,   449,   450,   451,   451,
+     467,   475,   476,   480,   484,   485,   486,   487,   488,   489,
+     490,   494,   498,   499,   500,   504,   505,   509,   510,   514,
+     518,   529,   533,   534,   538,   557,   558,   562,   573
 };
 #endif
 
@@ -1617,7 +1617,7 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 169 "parser.y" /* yacc.c:1646  */
+#line 179 "parser.y" /* yacc.c:1646  */
     {
                                                                                 insert((yyvsp[0].str), IDENT, NONE, CAT_PROGRAM_NAME, NONE, line_num, CURR_SCOPE, 0);                                                                                
                                                                                 if (DEBUG) printSymbolTable();
@@ -1626,55 +1626,55 @@ yyreduce:
     break;
 
   case 3:
-#line 173 "parser.y" /* yacc.c:1646  */
+#line 183 "parser.y" /* yacc.c:1646  */
     {;}
 #line 1632 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 4:
-#line 175 "parser.y" /* yacc.c:1646  */
+#line 185 "parser.y" /* yacc.c:1646  */
     {;}
 #line 1638 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 5:
-#line 179 "parser.y" /* yacc.c:1646  */
+#line 189 "parser.y" /* yacc.c:1646  */
     {;}
 #line 1644 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 6:
-#line 180 "parser.y" /* yacc.c:1646  */
+#line 190 "parser.y" /* yacc.c:1646  */
     {;}
 #line 1650 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 7:
-#line 184 "parser.y" /* yacc.c:1646  */
+#line 194 "parser.y" /* yacc.c:1646  */
     {;}
 #line 1656 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 8:
-#line 185 "parser.y" /* yacc.c:1646  */
+#line 195 "parser.y" /* yacc.c:1646  */
     {;}
 #line 1662 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 9:
-#line 186 "parser.y" /* yacc.c:1646  */
+#line 196 "parser.y" /* yacc.c:1646  */
     {;}
 #line 1668 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 10:
-#line 187 "parser.y" /* yacc.c:1646  */
+#line 197 "parser.y" /* yacc.c:1646  */
     {;}
 #line 1674 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 11:
-#line 191 "parser.y" /* yacc.c:1646  */
+#line 201 "parser.y" /* yacc.c:1646  */
     {
                                                                                 insert((yyvsp[-4].str), IDENT, t_type, CAT_CONSTANT, t_num, line_num, CURR_SCOPE, 0);
                                                                                 if (DEBUG) printSymbolTable();
@@ -1683,61 +1683,61 @@ yyreduce:
     break;
 
   case 12:
-#line 195 "parser.y" /* yacc.c:1646  */
+#line 205 "parser.y" /* yacc.c:1646  */
     {;}
 #line 1689 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 13:
-#line 196 "parser.y" /* yacc.c:1646  */
+#line 206 "parser.y" /* yacc.c:1646  */
     {;}
 #line 1695 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 14:
-#line 197 "parser.y" /* yacc.c:1646  */
+#line 207 "parser.y" /* yacc.c:1646  */
     {;}
 #line 1701 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 15:
-#line 198 "parser.y" /* yacc.c:1646  */
+#line 208 "parser.y" /* yacc.c:1646  */
     {;}
 #line 1707 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 16:
-#line 202 "parser.y" /* yacc.c:1646  */
+#line 212 "parser.y" /* yacc.c:1646  */
     {;}
 #line 1713 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 17:
-#line 203 "parser.y" /* yacc.c:1646  */
+#line 213 "parser.y" /* yacc.c:1646  */
     {;}
 #line 1719 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 18:
-#line 204 "parser.y" /* yacc.c:1646  */
+#line 214 "parser.y" /* yacc.c:1646  */
     {;}
 #line 1725 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 19:
-#line 205 "parser.y" /* yacc.c:1646  */
+#line 215 "parser.y" /* yacc.c:1646  */
     {;}
 #line 1731 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 20:
-#line 206 "parser.y" /* yacc.c:1646  */
+#line 216 "parser.y" /* yacc.c:1646  */
     {;}
 #line 1737 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 21:
-#line 210 "parser.y" /* yacc.c:1646  */
+#line 220 "parser.y" /* yacc.c:1646  */
     {
                                                                                 t_type = REAL_TYPE;
                                                                                 for (int i=0; i < t_cadeias.size(); i++) { // for each variable in the list
@@ -1770,7 +1770,7 @@ yyreduce:
     break;
 
   case 22:
-#line 238 "parser.y" /* yacc.c:1646  */
+#line 248 "parser.y" /* yacc.c:1646  */
     {
                                                                                 t_type = INT_TYPE;
                                                                                 for (int i=0; i < t_cadeias.size(); i++) {
@@ -1803,7 +1803,7 @@ yyreduce:
     break;
 
   case 23:
-#line 269 "parser.y" /* yacc.c:1646  */
+#line 279 "parser.y" /* yacc.c:1646  */
     {
                                                                                 if(check_var_type){ /* The variable is already declared */
                                                                                     if(find((yyvsp[0].str), CAT_VARIABLE)){
@@ -1823,7 +1823,7 @@ yyreduce:
     break;
 
   case 24:
-#line 284 "parser.y" /* yacc.c:1646  */
+#line 294 "parser.y" /* yacc.c:1646  */
     {
                                                                                 if(DEBUG) cout << "inseriu " << (yyvsp[-2].str) << " em t_cadeias\n";
                                                                                 t_cadeias.push_back((yyvsp[-2].str));
@@ -1832,19 +1832,19 @@ yyreduce:
     break;
 
   case 25:
-#line 291 "parser.y" /* yacc.c:1646  */
+#line 301 "parser.y" /* yacc.c:1646  */
     {;}
 #line 1838 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 26:
-#line 292 "parser.y" /* yacc.c:1646  */
+#line 302 "parser.y" /* yacc.c:1646  */
     {;}
 #line 1844 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 27:
-#line 296 "parser.y" /* yacc.c:1646  */
+#line 306 "parser.y" /* yacc.c:1646  */
     { 
                                                                                 t_cadeias.clear();
                                                                                 if (!find(CURR_SCOPE, (yyvsp[0].str))) {
@@ -1869,7 +1869,7 @@ yyreduce:
     break;
 
   case 28:
-#line 316 "parser.y" /* yacc.c:1646  */
+#line 326 "parser.y" /* yacc.c:1646  */
     {
                                                                                 is_proc_parameter = false;
                                                                                 if (DEBUG) printProcParameters(curr_proc_name);
@@ -1878,7 +1878,7 @@ yyreduce:
     break;
 
   case 29:
-#line 321 "parser.y" /* yacc.c:1646  */
+#line 331 "parser.y" /* yacc.c:1646  */
     {
                                                                                 if (DEBUG) printSymbolTable();
                                                                                 if (DEBUG) cout << " ! REMOVING SCOPE " << CURR_SCOPE << "\n";
@@ -1894,115 +1894,115 @@ yyreduce:
     break;
 
   case 30:
-#line 333 "parser.y" /* yacc.c:1646  */
+#line 343 "parser.y" /* yacc.c:1646  */
     {;}
 #line 1900 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 31:
-#line 334 "parser.y" /* yacc.c:1646  */
+#line 344 "parser.y" /* yacc.c:1646  */
     {;}
 #line 1906 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 32:
-#line 335 "parser.y" /* yacc.c:1646  */
+#line 345 "parser.y" /* yacc.c:1646  */
     {;}
 #line 1912 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 33:
-#line 336 "parser.y" /* yacc.c:1646  */
+#line 346 "parser.y" /* yacc.c:1646  */
     {;}
 #line 1918 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 34:
-#line 337 "parser.y" /* yacc.c:1646  */
+#line 347 "parser.y" /* yacc.c:1646  */
     {;}
 #line 1924 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 35:
-#line 341 "parser.y" /* yacc.c:1646  */
+#line 351 "parser.y" /* yacc.c:1646  */
     { t_cadeias.clear(); }
 #line 1930 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 36:
-#line 342 "parser.y" /* yacc.c:1646  */
+#line 352 "parser.y" /* yacc.c:1646  */
     {; }
 #line 1936 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 37:
-#line 343 "parser.y" /* yacc.c:1646  */
+#line 353 "parser.y" /* yacc.c:1646  */
     {;}
 #line 1942 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 38:
-#line 344 "parser.y" /* yacc.c:1646  */
+#line 354 "parser.y" /* yacc.c:1646  */
     {;}
 #line 1948 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 39:
-#line 348 "parser.y" /* yacc.c:1646  */
+#line 358 "parser.y" /* yacc.c:1646  */
     {;}
 #line 1954 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 40:
-#line 349 "parser.y" /* yacc.c:1646  */
+#line 359 "parser.y" /* yacc.c:1646  */
     {;}
 #line 1960 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 41:
-#line 350 "parser.y" /* yacc.c:1646  */
+#line 360 "parser.y" /* yacc.c:1646  */
     {;}
 #line 1966 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 42:
-#line 354 "parser.y" /* yacc.c:1646  */
+#line 364 "parser.y" /* yacc.c:1646  */
     {;}
 #line 1972 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 43:
-#line 355 "parser.y" /* yacc.c:1646  */
+#line 365 "parser.y" /* yacc.c:1646  */
     {;}
 #line 1978 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 44:
-#line 359 "parser.y" /* yacc.c:1646  */
+#line 369 "parser.y" /* yacc.c:1646  */
     {;}
 #line 1984 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 45:
-#line 360 "parser.y" /* yacc.c:1646  */
+#line 370 "parser.y" /* yacc.c:1646  */
     {;}
 #line 1990 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 46:
-#line 361 "parser.y" /* yacc.c:1646  */
+#line 371 "parser.y" /* yacc.c:1646  */
     {;}
 #line 1996 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 47:
-#line 365 "parser.y" /* yacc.c:1646  */
+#line 375 "parser.y" /* yacc.c:1646  */
     {;}
 #line 2002 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 48:
-#line 369 "parser.y" /* yacc.c:1646  */
+#line 379 "parser.y" /* yacc.c:1646  */
     {
                                                                                 t_type_params.clear();
                                                                             }
@@ -2010,25 +2010,25 @@ yyreduce:
     break;
 
   case 49:
-#line 372 "parser.y" /* yacc.c:1646  */
+#line 382 "parser.y" /* yacc.c:1646  */
     {;}
 #line 2016 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 50:
-#line 373 "parser.y" /* yacc.c:1646  */
+#line 383 "parser.y" /* yacc.c:1646  */
     {;}
 #line 2022 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 51:
-#line 374 "parser.y" /* yacc.c:1646  */
+#line 384 "parser.y" /* yacc.c:1646  */
     {;}
 #line 2028 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 52:
-#line 378 "parser.y" /* yacc.c:1646  */
+#line 388 "parser.y" /* yacc.c:1646  */
     {
                                                                                 if (DEBUG) printSymbolTable();
                                                                                 if(find((yyvsp[0].str), CAT_VARIABLE)){
@@ -2041,61 +2041,61 @@ yyreduce:
     break;
 
   case 53:
-#line 386 "parser.y" /* yacc.c:1646  */
+#line 396 "parser.y" /* yacc.c:1646  */
     {;}
 #line 2047 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 54:
-#line 390 "parser.y" /* yacc.c:1646  */
+#line 400 "parser.y" /* yacc.c:1646  */
     {;}
 #line 2053 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 55:
-#line 391 "parser.y" /* yacc.c:1646  */
+#line 401 "parser.y" /* yacc.c:1646  */
     {;}
 #line 2059 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 56:
-#line 395 "parser.y" /* yacc.c:1646  */
+#line 405 "parser.y" /* yacc.c:1646  */
     {;}
 #line 2065 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 57:
-#line 396 "parser.y" /* yacc.c:1646  */
+#line 406 "parser.y" /* yacc.c:1646  */
     {;}
 #line 2071 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 58:
-#line 397 "parser.y" /* yacc.c:1646  */
+#line 407 "parser.y" /* yacc.c:1646  */
     {;}
 #line 2077 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 59:
-#line 401 "parser.y" /* yacc.c:1646  */
+#line 411 "parser.y" /* yacc.c:1646  */
     {;}
 #line 2083 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 60:
-#line 402 "parser.y" /* yacc.c:1646  */
+#line 412 "parser.y" /* yacc.c:1646  */
     {;}
 #line 2089 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 61:
-#line 403 "parser.y" /* yacc.c:1646  */
+#line 413 "parser.y" /* yacc.c:1646  */
     {;}
 #line 2095 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 62:
-#line 413 "parser.y" /* yacc.c:1646  */
+#line 423 "parser.y" /* yacc.c:1646  */
     { 
                                                                                 t_var_type = NONE;
                                                                                 check_var_type = true;
@@ -2105,7 +2105,7 @@ yyreduce:
     break;
 
   case 63:
-#line 418 "parser.y" /* yacc.c:1646  */
+#line 428 "parser.y" /* yacc.c:1646  */
     {
                                                                                 if (has_diff_type){
                                                                                     cout << MSG_BEGIN_ERROR << line_num << ": comando 'read' apresenta variáveis de tipos diferentes.\n";
@@ -2118,7 +2118,7 @@ yyreduce:
     break;
 
   case 64:
-#line 426 "parser.y" /* yacc.c:1646  */
+#line 436 "parser.y" /* yacc.c:1646  */
     {
                                                                                 t_var_type = NONE;
                                                                                 check_var_type = true;
@@ -2128,7 +2128,7 @@ yyreduce:
     break;
 
   case 65:
-#line 431 "parser.y" /* yacc.c:1646  */
+#line 441 "parser.y" /* yacc.c:1646  */
     {
                                                                                 if (has_diff_type){
                                                                                     cout << MSG_BEGIN_ERROR << line_num << ": comando 'write' apresenta variáveis de tipos diferentes.\n";
@@ -2141,19 +2141,19 @@ yyreduce:
     break;
 
   case 66:
-#line 439 "parser.y" /* yacc.c:1646  */
+#line 449 "parser.y" /* yacc.c:1646  */
     {;}
 #line 2147 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 67:
-#line 440 "parser.y" /* yacc.c:1646  */
+#line 450 "parser.y" /* yacc.c:1646  */
     {;}
 #line 2153 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 68:
-#line 441 "parser.y" /* yacc.c:1646  */
+#line 451 "parser.y" /* yacc.c:1646  */
     {
                                                                                 if (!find((yyvsp[-1].str), CAT_VARIABLE)){
                                                                                     cout << MSG_BEGIN_ERROR << line_num << ": variável '"<< (yyvsp[-1].str) <<"' não declarada ou fora do escopo.\n";
@@ -2163,7 +2163,7 @@ yyreduce:
     break;
 
   case 69:
-#line 446 "parser.y" /* yacc.c:1646  */
+#line 456 "parser.y" /* yacc.c:1646  */
     {
                                                                                 if (find((yyvsp[-3].str), CAT_VARIABLE))
                                                                                 {
@@ -2179,7 +2179,7 @@ yyreduce:
     break;
 
   case 70:
-#line 457 "parser.y" /* yacc.c:1646  */
+#line 467 "parser.y" /* yacc.c:1646  */
     {
                                                                                 /* Procedure */
                                                                                 if (!find((yyvsp[-1].str), CAT_PROCEDURE)){
@@ -2192,121 +2192,121 @@ yyreduce:
     break;
 
   case 71:
-#line 465 "parser.y" /* yacc.c:1646  */
+#line 475 "parser.y" /* yacc.c:1646  */
     {;}
 #line 2198 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 72:
-#line 466 "parser.y" /* yacc.c:1646  */
+#line 476 "parser.y" /* yacc.c:1646  */
     {;}
 #line 2204 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 73:
-#line 470 "parser.y" /* yacc.c:1646  */
+#line 480 "parser.y" /* yacc.c:1646  */
     {;}
 #line 2210 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 74:
-#line 474 "parser.y" /* yacc.c:1646  */
+#line 484 "parser.y" /* yacc.c:1646  */
     {;}
 #line 2216 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 75:
-#line 475 "parser.y" /* yacc.c:1646  */
+#line 485 "parser.y" /* yacc.c:1646  */
     {;}
 #line 2222 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 76:
-#line 476 "parser.y" /* yacc.c:1646  */
+#line 486 "parser.y" /* yacc.c:1646  */
     {;}
 #line 2228 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 77:
-#line 477 "parser.y" /* yacc.c:1646  */
+#line 487 "parser.y" /* yacc.c:1646  */
     {;}
 #line 2234 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 78:
-#line 478 "parser.y" /* yacc.c:1646  */
+#line 488 "parser.y" /* yacc.c:1646  */
     {;}
 #line 2240 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 79:
-#line 479 "parser.y" /* yacc.c:1646  */
+#line 489 "parser.y" /* yacc.c:1646  */
     {;}
 #line 2246 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 80:
-#line 480 "parser.y" /* yacc.c:1646  */
+#line 490 "parser.y" /* yacc.c:1646  */
     {;}
 #line 2252 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 81:
-#line 484 "parser.y" /* yacc.c:1646  */
+#line 494 "parser.y" /* yacc.c:1646  */
     {;}
 #line 2258 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 82:
-#line 488 "parser.y" /* yacc.c:1646  */
+#line 498 "parser.y" /* yacc.c:1646  */
     {;}
 #line 2264 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 83:
-#line 489 "parser.y" /* yacc.c:1646  */
+#line 499 "parser.y" /* yacc.c:1646  */
     {;}
 #line 2270 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 84:
-#line 490 "parser.y" /* yacc.c:1646  */
+#line 500 "parser.y" /* yacc.c:1646  */
     {;}
 #line 2276 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 85:
-#line 494 "parser.y" /* yacc.c:1646  */
+#line 504 "parser.y" /* yacc.c:1646  */
     {;}
 #line 2282 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 86:
-#line 495 "parser.y" /* yacc.c:1646  */
+#line 505 "parser.y" /* yacc.c:1646  */
     {;}
 #line 2288 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 87:
-#line 499 "parser.y" /* yacc.c:1646  */
+#line 509 "parser.y" /* yacc.c:1646  */
     {;}
 #line 2294 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 88:
-#line 500 "parser.y" /* yacc.c:1646  */
+#line 510 "parser.y" /* yacc.c:1646  */
     {;}
 #line 2300 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 89:
-#line 504 "parser.y" /* yacc.c:1646  */
+#line 514 "parser.y" /* yacc.c:1646  */
     {;}
 #line 2306 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 90:
-#line 508 "parser.y" /* yacc.c:1646  */
+#line 518 "parser.y" /* yacc.c:1646  */
     {
                                                                                  if (is_division)
                                                                                 {
@@ -2322,25 +2322,25 @@ yyreduce:
     break;
 
   case 91:
-#line 519 "parser.y" /* yacc.c:1646  */
+#line 529 "parser.y" /* yacc.c:1646  */
     {;}
 #line 2328 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 92:
-#line 523 "parser.y" /* yacc.c:1646  */
+#line 533 "parser.y" /* yacc.c:1646  */
     {;}
 #line 2334 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 93:
-#line 524 "parser.y" /* yacc.c:1646  */
+#line 534 "parser.y" /* yacc.c:1646  */
     {is_division = true;}
 #line 2340 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 94:
-#line 528 "parser.y" /* yacc.c:1646  */
+#line 538 "parser.y" /* yacc.c:1646  */
     {
                                                                                 if (!find((yyvsp[0].str), CAT_VARIABLE)){
                                                                                     cout << MSG_BEGIN_ERROR << line_num << ": variável '"<< (yyvsp[0].str) <<"' não declarada.\n";
@@ -2364,19 +2364,19 @@ yyreduce:
     break;
 
   case 95:
-#line 547 "parser.y" /* yacc.c:1646  */
+#line 557 "parser.y" /* yacc.c:1646  */
     {;}
 #line 2370 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 96:
-#line 548 "parser.y" /* yacc.c:1646  */
+#line 558 "parser.y" /* yacc.c:1646  */
     {;}
 #line 2376 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 97:
-#line 552 "parser.y" /* yacc.c:1646  */
+#line 562 "parser.y" /* yacc.c:1646  */
     {
                                                                                 // printf("val: %s, text: %s\n", yylval, yytext);
                                                                                 t_num = yylval.str;
@@ -2392,7 +2392,7 @@ yyreduce:
     break;
 
   case 98:
-#line 563 "parser.y" /* yacc.c:1646  */
+#line 573 "parser.y" /* yacc.c:1646  */
     {
                                                                                 tmp = INT_TYPE;
                                                                                 tmp2 = tmp;
@@ -2638,7 +2638,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 570 "parser.y" /* yacc.c:1906  */
+#line 580 "parser.y" /* yacc.c:1906  */
 
 
 /**/
@@ -2695,21 +2695,30 @@ void yyerror(const char *str)
         yylval.str = strdup("");
         return;
     }
-    string tmp = str;
-    if (tmp.find("syntax error") != string::npos)
+    string strS = str;
+    bool hasExpecting = true;
+    if (strS.find("syntax error") != string::npos)
     {
-        string strS = str;
         int pos = strS.find("expecting");
-        pos += 10;
+        if (pos == string::npos)
+        {
+            hasExpecting = false;
+            pos = strS.find("unexpected");
+            pos += 11;
+        }
+        else
+        {
+            pos += 10;
+        }
         string expected;
-        bool test = false;
+        bool moreThanOneWord = false;
         string word;
         while (pos < strS.size())
         {
 
-            if (expected.size() && !test)
+            if (expected.size() && !moreThanOneWord)
             {
-                test = true;
+                moreThanOneWord = true;
                 expected += " (Note que ";
             }
             else if (expected.size())
@@ -2728,12 +2737,14 @@ void yyerror(const char *str)
             pos += 4;
         }
 
-        if (test)
+        if (moreThanOneWord)
         {
             expected += " também são opções validas )";
         }
-
-        printf("[Erro] Linha %d: Esperava-se encontrar %s porém encontrou-se '%s'\n", line_num, expected.c_str(), yylval.str); // qq coisa mudar yylval para yytext
+        if (hasExpecting)
+            printf("[Erro] Linha %d: Esperava-se encontrar %s porém encontrou-se '%s'\n", line_num, expected.c_str(), yylval.str); // qq coisa mudar yylval para yytext
+        else
+            printf("[Erro] Linha %d: %s inesperado\n", line_num, expected.c_str());
     }
     else
     {

@@ -859,7 +859,7 @@ case 24:
 YY_RULE_SETUP
 #line 124 "myscanner.l"
 {
-																								sprintf(str, "Linha %d: Encontrou-se %s que é considerado um inteiro mal formado", line_num, yytext);
+																								sprintf(str, "[Erro] Linha %d: Encontrou-se %s que é considerado um inteiro mal formado", line_num, yytext);
 																								yyerror(str); 
                                                 yylval.str = strdup("skip");
 																								return ERROINT;
@@ -869,7 +869,7 @@ case 25:
 YY_RULE_SETUP
 #line 130 "myscanner.l"
 {
-																								sprintf(str, "Linha %d: Encontrou-se %s que é considerado um float mal formado", line_num, yytext);
+																								sprintf(str, "[Erro] Linha %d: Encontrou-se %s que é considerado um float mal formado", line_num, yytext);
 																								yyerror(str);
                                                 yylval.str = strdup("skip");
 																								return ERROFLOAT;
@@ -879,7 +879,7 @@ case 26:
 YY_RULE_SETUP
 #line 136 "myscanner.l"
 {
-																								sprintf(str, "Linha %d: Encontrou-se %s que é considerado um identificador mal formado", line_num, yytext);
+																								sprintf(str, "[Erro] Linha %d: Encontrou-se %s que é considerado um identificador mal formado", line_num, yytext);
 																								yyerror(str);
                                                 yylval.str = strdup("skip");
 																								return ERROIDENT;
@@ -889,7 +889,7 @@ case 27:
 YY_RULE_SETUP
 #line 142 "myscanner.l"
 {
-																								sprintf(str, "Linha %d: Encontrou-se %s que é considerado como um caracter desconhecido",line_num, yytext);
+																								sprintf(str, "[Erro] Linha %d: Encontrou-se %s que é considerado como um caracter desconhecido",line_num, yytext);
 																								yyerror(str);
                                                 yylval.str = strdup("skip");
 																								return UNEXPECTED_CHAR;

@@ -7,7 +7,7 @@ compile:
 
 run:
 	#######################################################################################
-	# RUNNING TEST FOR DEBUGGING - IF YOU WANT TO RUN IT PROPERLY EXECUTE : bash script.sh 
+	# RUNNING TESTS FOR DEBUGGING - IF YOU WANT TO RUN IT PROPERLY EXECUTE : bash script.sh 
 	#
 	# TEST: attr_real_to_integer: 
 	@./parser < tests/attr_real_to_integer.in

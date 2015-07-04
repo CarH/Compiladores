@@ -9,7 +9,7 @@ begin
    x := 10;
    y := 20;
    z := x + y;
-  (*global variables *)
+  {global variables}
    a := 30;
    b:= 40;
    c:= a + b;
