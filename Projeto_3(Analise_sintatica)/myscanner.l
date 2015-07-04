@@ -122,25 +122,25 @@ yytokentype test(char *s)
 [\ \t]                																		;
 [\n]																						{++line_num;}
 [0-9][^\.\(\)\[\]\ \n\r\t;:,\+\-\*\/<>#]*   												{
-																								sprintf(str, "Linha %d: Encontrou-se %s que é considerado um inteiro mal formado", line_num, yytext);
+																								sprintf(str, "[Erro] Linha %d: Encontrou-se %s que é considerado um inteiro mal formado", line_num, yytext);
 																								yyerror(str); 
                                                 yylval.str = strdup("skip");
 																								return ERROINT;
 																							};
 [0-9][^\.\(\)\[\]\ \n\r\t;:,\+\-\*\/<>#]*\.[^\.\(\)\[\]\ \n\r\t;:,\+\-\*\/<>#]*   			{
-																								sprintf(str, "Linha %d: Encontrou-se %s que é considerado um float mal formado", line_num, yytext);
+																								sprintf(str, "[Erro] Linha %d: Encontrou-se %s que é considerado um float mal formado", line_num, yytext);
 																								yyerror(str);
                                                 yylval.str = strdup("skip");
 																								return ERROFLOAT;
 																							};
 [A-Za-z][^\.\(\)\[\]\ \n\r\t;:,\+\-\*\/<>#]*   												{
-																								sprintf(str, "Linha %d: Encontrou-se %s que é considerado um identificador mal formado", line_num, yytext);
+																								sprintf(str, "[Erro] Linha %d: Encontrou-se %s que é considerado um identificador mal formado", line_num, yytext);
 																								yyerror(str);
                                                 yylval.str = strdup("skip");
 																								return ERROIDENT;
 																							};
 .                       																	{
-																								sprintf(str, "Linha %d: Encontrou-se %s que é considerado como um caracter desconhecido",line_num, yytext);
+																								sprintf(str, "[Erro] Linha %d: Encontrou-se %s que é considerado como um caracter desconhecido",line_num, yytext);
 																								yyerror(str);
                                                 yylval.str = strdup("skip");
 																								return UNEXPECTED_CHAR;
